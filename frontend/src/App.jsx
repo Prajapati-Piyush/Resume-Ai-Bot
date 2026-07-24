@@ -1,17 +1,21 @@
-import { RouterProvider } from 'react-router'
+import { RouterProvider } from 'react-router-dom'
 import { router } from './app.route.jsx'
-import { AuthProvider } from './features/auth/services/auth.context.jsx'
+import { AuthProvider } from './context/AuthContext.jsx'
+import { ToastProvider } from './context/ToastContext.jsx'
+import { ResumeProvider } from './context/ResumeContext.jsx'
+import ErrorBoundary from './components/layout/ErrorBoundary.jsx'
 
-function App() {
-
-
+export default function App() {
   return (
-
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-
+    <ErrorBoundary>
+      {/* Toasts sit outermost so any provider below can raise one. */}
+      <ToastProvider>
+        <AuthProvider>
+          <ResumeProvider>
+            <RouterProvider router={router} />
+          </ResumeProvider>
+        </AuthProvider>
+      </ToastProvider>
+    </ErrorBoundary>
   )
 }
-
-export default App
