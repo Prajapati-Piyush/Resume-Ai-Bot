@@ -4,17 +4,22 @@ import authRouter from './routes/auth.route.js'
 import interviewRouter from './routes/interview.route.js'
 import cookieParser from 'cookie-parser'
 import cors from "cors";
+import passport from './config/passport.js'
 
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
   credentials: true,
 }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Passport in stateless mode — we use JWT cookies, not passport sessions,
+// so only initialize() is needed (no session()/serializeUser).
+app.use(passport.initialize());
 
 app.use("/api/auth", authRouter);
 

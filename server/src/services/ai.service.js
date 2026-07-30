@@ -156,6 +156,12 @@ async function callGemini(prompt) {
         config: {
           responseMimeType: "application/json",
           responseSchema: RESPONSE_SCHEMA,
+          // A full report (many questions, each with a long answer, plus a
+          // multi-day plan) can be several thousand tokens. gemini-2.5-flash also
+          // spends "thinking" tokens from the same budget, so we set this well
+          // above the expected output size to stop long reports being clipped
+          // mid-array. Truncation is still detected below via finishReason.
+          maxOutputTokens: 16384,
         },
       });
     } catch (error) {
@@ -210,6 +216,17 @@ export default async function generateInterviewReport({
     Job describe: ${jobDescription}`;
 
     const response = await callGemini(prompt);
+
+    // If the model hit the output cap, the JSON is truncated mid-stream. Fail
+    // loudly here so a partial report is never parsed, saved or exported.
+    const finishReason = response?.candidates?.[0]?.finishReason;
+    if (finishReason === "MAX_TOKENS") {
+      console.error("Gemini truncated the report (finishReason=MAX_TOKENS)");
+      throw new AiServiceError(
+        "The report was too long to generate in one pass. Please try again with a shorter job description.",
+        { status: 502 },
+      );
+    }
 
     if (!response?.text) {
       throw new AiServiceError("The AI service returned an empty response.", {

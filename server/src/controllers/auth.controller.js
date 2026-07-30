@@ -3,6 +3,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import tokenBlacklistModel from "../models/blacklist.model.js";
+import { signSessionToken, setSessionCookie } from "../utils/session.js";
+
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
 export async function register(req, res) {
     const { username, email, password } = req.body
@@ -233,5 +236,31 @@ export async function resetPassword(req, res) {
     } catch (error) {
         console.error("[auth] resetPassword error", error);
         return res.status(500).json({ message: "Failed to reset password" });
+    }
+}
+
+/**
+ * Google OAuth callback. Passport has already resolved req.user (find-or-create
+ * by googleId / email). We issue the app's standard JWT session cookie and
+ * redirect back to the SPA — the frontend's getMe() on load picks up the session.
+ */
+export function googleCallback(req, res) {
+    try {
+        if (!req.user) {
+            return res.redirect(`${FRONTEND_URL}/login?oauth=failed`);
+        }
+
+        if (!process.env.JWT_SECRET) {
+            console.error("[auth] JWT_SECRET is not configured");
+            return res.redirect(`${FRONTEND_URL}/login?oauth=error`);
+        }
+
+        const token = signSessionToken(req.user);
+        setSessionCookie(res, token);
+
+        return res.redirect(`${FRONTEND_URL}/app`);
+    } catch (error) {
+        console.error("[auth] googleCallback error", error);
+        return res.redirect(`${FRONTEND_URL}/login?oauth=error`);
     }
 }
