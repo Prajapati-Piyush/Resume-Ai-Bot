@@ -1,0 +1,279 @@
+You are a Staff Product Designer and Senior UI Engineer experienced in building premium products like Linear, Vercel, Stripe, Notion AI, OpenAI, Perplexity, and Cursor.
+
+Your task is to transform my existing PrepPilot frontend into a premium AI SaaS experience.
+
+IMPORTANT:
+This is a FRONTEND ONLY task.
+
+Do NOT change:
+- Backend APIs
+- Express logic
+- MongoDB models
+- Authentication
+- Gemini integration
+- Business logic
+- API contracts
+
+Preserve all existing functionality. Improve only UI, UX, design system, responsiveness, and interactions.
+
+====================================================
+PROJECT
+====================================================
+
+PrepPilot is an AI interview preparation platform.
+
+It analyses:
+- Resume
+- Job Description
+
+and generates:
+- Interview Questions
+- Suggested Answers
+- Skill Gap Analysis
+- Preparation Roadmap
+- Interview Reports
+
+Stack:
+- React
+- Tailwind CSS
+- React Router
+
+====================================================
+GOAL
+====================================================
+
+Redesign the application into a premium AI SaaS product.
+
+The experience should feel like a high-quality startup product built by a world-class design team.
+
+Inspiration:
+- Linear
+- Vercel
+- Stripe
+- OpenAI
+- Perplexity
+- Cursor
+- Notion AI
+
+Design should be:
+- Premium
+- Minimal
+- Modern
+- AI-first
+- Fast
+- Professional
+
+Avoid:
+- Generic Bootstrap look
+- Clutter
+- Excessive gradients
+- Cheap glass effects
+
+====================================================
+DESIGN SYSTEM
+====================================================
+
+Create a consistent design system:
+
+- Rounded cards (16px)
+- Soft shadows
+- Clean borders
+- Premium spacing
+- Strong typography hierarchy
+- Smooth hover states
+- Micro interactions
+
+Use:
+- Lucide icons
+- Framer Motion animations
+
+Animations:
+- Page transitions
+- Card animations
+- Button interactions
+- Modal transitions
+- Loading animations
+
+Keep animations subtle and professional.
+
+====================================================
+THEME SYSTEM
+====================================================
+
+Implement:
+
+✓ Light Theme
+✓ Dark Theme
+
+Requirements:
+- Theme toggle
+- Persist preference
+- Follow system preference
+- Perfect contrast
+
+Dark mode should feel like Linear.
+Light mode should feel like Vercel.
+
+====================================================
+RESPONSIVENESS
+====================================================
+
+Make the complete app responsive:
+
+- Desktop
+- Tablet
+- Mobile
+
+No broken layouts.
+
+====================================================
+PAGES TO REDESIGN
+====================================================
+
+Redesign:
+
+- Login
+- Register
+- Dashboard
+- Generate Report
+- Report View
+- History
+- Profile
+- Navbar
+- Sidebar
+- Forms
+- Cards
+
+Maintain existing functionality.
+
+====================================================
+AI EXPERIENCE IMPROVEMENTS
+====================================================
+
+Improve loading states.
+
+Replace basic loaders with AI progress:
+
+Reading Resume...
+Understanding Job Description...
+Matching Skills...
+Generating Questions...
+Creating Roadmap...
+Preparing Report...
+
+====================================================
+REPORT PAGE
+====================================================
+
+Make it feel like an AI workspace.
+
+Use:
+
+- Summary cards
+- Score sections
+- Skill gap cards
+- Question cards
+- Answer cards
+- Timeline roadmap
+- Expandable sections
+- Sticky actions
+
+Improve readability and spacing.
+
+====================================================
+FEATURES TO ADD
+====================================================
+
+1. EXPORT REPORT AS PDF
+
+Add export option:
+
+- Full Report
+- Questions Only
+- Roadmap Only
+
+PDF should have a professional printable design.
+
+
+2. DASHBOARD SUMMARY CARDS
+
+Redesign dashboard cards with:
+
+- Match Score
+- Readiness Score
+- Top Skill Gaps
+- Top Questions
+- Created Date
+- Quick Actions
+
+
+3. INTERVIEW READINESS SCORE
+
+Add a premium analytics section:
+
+Example:
+
+88% Readiness
+
+Categories:
+
+- Technical Skills
+- Communication
+- Problem Solving
+- Behavioural
+- Confidence
+
+Show:
+
+- Circular progress
+- Progress bars
+- Analytics cards
+- Trend indicators
+
+====================================================
+UX IMPROVEMENTS
+====================================================
+
+Improve:
+
+- Empty states
+- Error states
+- Success states
+- Notifications
+- Navigation
+- Search/filter UI
+- Spacing
+
+Everything should feel effortless.
+
+====================================================
+CODE QUALITY
+====================================================
+
+- Create reusable components
+- Avoid duplicate UI code
+- Keep architecture clean
+- Modify only frontend files
+- Reuse existing API data
+
+====================================================
+FINAL EXPECTATION
+====================================================
+
+When users open PrepPilot, the first impression should be:
+
+"This feels like a premium AI SaaS product."
+
+The final UI should visually compete with:
+
+- Perplexity
+- Linear
+- Cursor
+- Vercel
+- OpenAI
+- Stripe
+
+Before changing anything:
+1. Analyse the current frontend structure.
+2. Understand existing components.
+3. Improve the design without breaking functionality.

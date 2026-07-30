@@ -60,7 +60,7 @@ export function ToastProvider({ children }) {
               <Icon className={`mt-0.5 h-5 w-5 shrink-0 ${tint}`} aria-hidden="true" />
               <div className="min-w-0 flex-1">
                 {t.title && (
-                  <p className="text-sm font-semibold text-white">{t.title}</p>
+                  <p className="text-sm font-semibold text-ink-50">{t.title}</p>
                 )}
                 <p className="break-words text-sm text-ink-300">{t.message}</p>
               </div>
@@ -68,7 +68,7 @@ export function ToastProvider({ children }) {
                 type="button"
                 onClick={() => dismiss(t.id)}
                 aria-label="Dismiss notification"
-                className="rounded-md p-1 text-ink-400 transition hover:bg-white/5 hover:text-white"
+                className="rounded-md p-1 text-ink-400 transition hover:bg-fill-strong hover:text-ink-50"
               >
                 <X className="h-4 w-4" />
               </button>

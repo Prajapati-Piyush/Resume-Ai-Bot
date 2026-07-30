@@ -1,9 +1,11 @@
-import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { Lock, LogIn, Mail } from 'lucide-react'
 import AuthShell from '../../components/layout/AuthShell'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
+import GoogleLoginButton from '../../components/auth/GoogleLoginButton'
+import AuthDivider from '../../components/auth/AuthDivider'
 import { useAuth } from '../../hooks/useAuth'
 import { useToast } from '../../hooks/useToast'
 import { collectErrors, validateEmail, validatePassword } from '../../lib/validation'
@@ -13,11 +15,27 @@ export default function Login() {
   const toast = useToast()
   const navigate = useNavigate()
   const location = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const [form, setForm] = useState({ email: '', password: '', rememberMe: false })
   const [errors, setErrors] = useState({})
   const [formError, setFormError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+
+  // Surface Google OAuth failures redirected back as ?oauth=failed|error,
+  // then strip the param so a refresh doesn't re-toast.
+  useEffect(() => {
+    const oauth = searchParams.get('oauth')
+    if (!oauth) return
+    toast.error(
+      oauth === 'failed'
+        ? 'Google sign-in was cancelled or denied.'
+        : 'Google sign-in failed. Please try again.',
+      { title: 'Sign in failed' },
+    )
+    searchParams.delete('oauth')
+    setSearchParams(searchParams, { replace: true })
+  }, [searchParams, setSearchParams, toast])
 
   const update = (field) => (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
@@ -118,7 +136,7 @@ export default function Login() {
               checked={form.rememberMe}
               onChange={update('rememberMe')}
               disabled={submitting}
-              className="h-4 w-4 rounded border-white/20 bg-white/5 text-brand-500 focus:ring-brand-400"
+              className="h-4 w-4 rounded border-line-strong bg-fill-strong text-brand-500 focus:ring-brand-400"
             />
             Remember me
           </label>
@@ -135,6 +153,10 @@ export default function Login() {
           {!submitting && <LogIn className="h-4 w-4" aria-hidden="true" />}
           {submitting ? 'Signing in…' : 'Sign in'}
         </Button>
+
+        <AuthDivider />
+
+        <GoogleLoginButton label="Continue with Google" disabled={submitting} />
       </form>
     </AuthShell>
   )

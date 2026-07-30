@@ -14,11 +14,15 @@ import { cn } from '../../lib/utils'
 const MIN_JD_LENGTH = 40
 
 // Shown while the request is in flight so the wait feels accounted for.
+// These narrate the AI pipeline; timing is cosmetic — the real response
+// navigates away as soon as it lands.
 const STAGES = [
-  { label: 'Uploading your resume', detail: 'Sending the PDF securely' },
-  { label: 'Extracting resume text', detail: 'Parsing structure and skills' },
-  { label: 'Analyzing the job description', detail: 'Matching requirements' },
-  { label: 'Generating your report', detail: 'Questions, gaps and roadmap' },
+  { label: 'Reading your resume', detail: 'Extracting text and structure' },
+  { label: 'Understanding the job description', detail: 'Parsing requirements' },
+  { label: 'Matching skills', detail: 'Comparing your profile to the role' },
+  { label: 'Generating questions', detail: 'Technical and behavioural' },
+  { label: 'Creating your roadmap', detail: 'A day-by-day prep plan' },
+  { label: 'Preparing your report', detail: 'Finalising everything' },
 ]
 
 function GeneratingOverlay({ stage, progress }) {
@@ -31,7 +35,7 @@ function GeneratingOverlay({ stage, progress }) {
         </div>
       </div>
 
-      <h2 className="mt-6 text-lg font-semibold text-white">Generating your report</h2>
+      <h2 className="mt-6 text-lg font-semibold text-ink-50">Generating your report</h2>
       <p className="mt-1.5 text-sm text-ink-400">
         This usually takes 30–60 seconds. Please keep this tab open.
       </p>
@@ -47,7 +51,7 @@ function GeneratingOverlay({ stage, progress }) {
                   'grid h-7 w-7 shrink-0 place-items-center rounded-full border text-[11px] font-semibold transition-all',
                   done && 'border-emerald-400/30 bg-emerald-500/15 text-emerald-400',
                   active && 'border-brand-400/40 bg-brand-500/15 text-brand-300',
-                  !done && !active && 'border-white/10 bg-white/[0.03] text-ink-600',
+                  !done && !active && 'border-line bg-fill text-ink-600',
                 )}
               >
                 {done ? '✓' : i + 1}
@@ -57,7 +61,7 @@ function GeneratingOverlay({ stage, progress }) {
                 <p
                   className={cn(
                     'text-sm transition-colors',
-                    active ? 'font-medium text-white' : done ? 'text-ink-300' : 'text-ink-600',
+                    active ? 'font-medium text-ink-50' : done ? 'text-ink-300' : 'text-ink-600',
                   )}
                 >
                   {s.label}
@@ -122,11 +126,14 @@ export default function JobAnalysis() {
     setProgress(0)
     setStage(0)
 
-    // advance the visual stages while the server works
+    // advance the visual stages while the server works (last stage holds
+    // until the real response lands and navigates away)
     stageTimers.current = [
-      setTimeout(() => setStage(1), 1200),
+      setTimeout(() => setStage(1), 1500),
       setTimeout(() => setStage(2), 4000),
-      setTimeout(() => setStage(3), 9000),
+      setTimeout(() => setStage(3), 7000),
+      setTimeout(() => setStage(4), 11000),
+      setTimeout(() => setStage(5), 16000),
     ]
 
     try {

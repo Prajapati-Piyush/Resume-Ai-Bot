@@ -88,7 +88,7 @@ export default function Profile() {
               {initialsOf(user?.name, user?.email)}
             </span>
 
-            <h2 className="mt-4 text-lg font-semibold text-white">{user?.name || 'Your account'}</h2>
+            <h2 className="mt-4 text-lg font-semibold text-ink-50">{user?.name || 'Your account'}</h2>
             <p className="mt-0.5 text-sm text-ink-400">{user?.email}</p>
 
             <div className="mt-4 flex justify-center">
@@ -107,12 +107,12 @@ export default function Profile() {
               ].map(({ label, value, icon: Icon }) => (
                 <div
                   key={label}
-                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3"
+                  className="flex items-center gap-3 rounded-xl border border-line bg-fill px-4 py-3"
                 >
                   <Icon className="h-4 w-4 shrink-0 text-ink-500" aria-hidden="true" />
                   <div className="min-w-0">
                     <dt className="text-xs text-ink-500">{label}</dt>
-                    <dd className="truncate text-sm text-white">{value}</dd>
+                    <dd className="truncate text-sm text-ink-50">{value}</dd>
                   </div>
                 </div>
               ))}
@@ -132,18 +132,18 @@ export default function Profile() {
                 ))
               ) : (
                 <>
-                  <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-center">
-                    <p className="text-2xl font-bold tabular-nums text-white">{stats.total}</p>
+                  <div className="rounded-xl border border-line bg-fill p-4 text-center">
+                    <p className="text-2xl font-bold tabular-nums text-ink-50">{stats.total}</p>
                     <p className="mt-1 text-xs text-ink-500">Reports</p>
                   </div>
-                  <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-center">
-                    <p className="text-2xl font-bold tabular-nums text-white">
+                  <div className="rounded-xl border border-line bg-fill p-4 text-center">
+                    <p className="text-2xl font-bold tabular-nums text-ink-50">
                       {stats.total ? `${stats.avg}%` : '—'}
                     </p>
                     <p className="mt-1 text-xs text-ink-500">Avg. match</p>
                   </div>
-                  <div className="col-span-2 rounded-xl border border-white/10 bg-white/[0.02] p-4 text-center sm:col-span-1">
-                    <p className="truncate text-sm font-medium text-white">
+                  <div className="col-span-2 rounded-xl border border-line bg-fill p-4 text-center sm:col-span-1">
+                    <p className="truncate text-sm font-medium text-ink-50">
                       {stats.latest ? formatRelativeTime(stats.latest.createdAt) : '—'}
                     </p>
                     <p className="mt-1 text-xs text-ink-500">Last analysis</p>
@@ -165,7 +165,7 @@ export default function Profile() {
                 <div className="flex items-center gap-3 rounded-xl border border-emerald-400/20 bg-emerald-500/[0.06] px-4 py-3">
                   <FileText className="h-5 w-5 shrink-0 text-emerald-400" aria-hidden="true" />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-white">{resume.name}</p>
+                    <p className="truncate text-sm font-medium text-ink-50">{resume.name}</p>
                     <p className="text-xs text-ink-400">
                       {formatBytes(resume.size)} · added {formatRelativeTime(resume.addedAt)}
                     </p>
@@ -190,11 +190,11 @@ export default function Profile() {
             <CardHeader icon={Shield} title="Settings" description="Manage access to your account." />
 
             <div className="space-y-3 px-5 pb-5 sm:px-6 sm:pb-6">
-              <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 rounded-xl border border-line bg-fill p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
                   <KeyRound className="mt-0.5 h-4 w-4 shrink-0 text-ink-500" aria-hidden="true" />
                   <div>
-                    <p className="text-sm font-medium text-white">Password</p>
+                    <p className="text-sm font-medium text-ink-50">Password</p>
                     <p className="mt-0.5 text-xs text-ink-500">
                       Reset it via the emailed link flow.
                     </p>
@@ -205,11 +205,11 @@ export default function Profile() {
                 </Button>
               </div>
 
-              <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 rounded-xl border border-line bg-fill p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
                   <LogOut className="mt-0.5 h-4 w-4 shrink-0 text-ink-500" aria-hidden="true" />
                   <div>
-                    <p className="text-sm font-medium text-white">Sign out</p>
+                    <p className="text-sm font-medium text-ink-50">Sign out</p>
                     <p className="mt-0.5 text-xs text-ink-500">
                       End this session on this device.
                     </p>

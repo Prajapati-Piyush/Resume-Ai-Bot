@@ -3,6 +3,7 @@ import { Link, Outlet } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import Logo from './Logo'
 import Button from '../ui/Button'
+import ThemeToggle from '../ui/ThemeToggle'
 import { useAuth } from '../../hooks/useAuth'
 import { cn } from '../../lib/utils'
 
@@ -30,7 +31,7 @@ export default function MarketingLayout() {
       <header
         className={cn(
           'fixed inset-x-0 top-0 z-50 transition-all duration-300',
-          scrolled ? 'border-b border-white/8 bg-ink-950/80 backdrop-blur-xl' : 'bg-transparent',
+          scrolled ? 'border-b border-line bg-ink-950/80 backdrop-blur-xl' : 'bg-transparent',
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -41,7 +42,7 @@ export default function MarketingLayout() {
               <a
                 key={l.href}
                 href={l.href}
-                className="rounded-lg px-3 py-2 text-sm text-ink-400 transition hover:bg-white/5 hover:text-white"
+                className="rounded-lg px-3 py-2 text-sm text-ink-400 transition hover:bg-fill-strong hover:text-ink-50"
               >
                 {l.label}
               </a>
@@ -49,6 +50,7 @@ export default function MarketingLayout() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
+            <ThemeToggle variant="icon" />
             {isAuthenticated ? (
               <Button to="/app" size="sm">Open dashboard</Button>
             ) : (
@@ -64,21 +66,21 @@ export default function MarketingLayout() {
             onClick={() => setMenuOpen((v) => !v)}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
-            className="rounded-lg p-2 text-ink-300 transition hover:bg-white/5 hover:text-white md:hidden"
+            className="rounded-lg p-2 text-ink-300 transition hover:bg-fill-strong hover:text-ink-50 md:hidden"
           >
             {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
 
         {menuOpen && (
-          <div className="animate-fade-in border-t border-white/8 bg-ink-950/95 px-4 py-4 backdrop-blur-xl md:hidden">
+          <div className="animate-fade-in border-t border-line bg-ink-950/95 px-4 py-4 backdrop-blur-xl md:hidden">
             <nav className="flex flex-col gap-1" aria-label="Sections">
               {LINKS.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm text-ink-300 transition hover:bg-white/5 hover:text-white"
+                  className="rounded-lg px-3 py-2.5 text-sm text-ink-300 transition hover:bg-fill-strong hover:text-ink-50"
                 >
                   {l.label}
                 </a>
@@ -94,6 +96,10 @@ export default function MarketingLayout() {
                   <Button to="/register" fullWidth>Get started free</Button>
                 </>
               )}
+              <div className="mt-2 flex items-center justify-between rounded-lg border border-line bg-fill px-3 py-2">
+                <span className="text-sm text-ink-400">Theme</span>
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         )}
@@ -101,7 +107,7 @@ export default function MarketingLayout() {
 
       <main><Outlet /></main>
 
-      <footer className="border-t border-white/8 bg-ink-950">
+      <footer className="border-t border-line bg-ink-950">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
             <div className="max-w-xs">
@@ -118,7 +124,7 @@ export default function MarketingLayout() {
                 <ul className="mt-3 space-y-2 text-sm">
                   {LINKS.map((l) => (
                     <li key={l.href}>
-                      <a href={l.href} className="text-ink-500 transition hover:text-white">{l.label}</a>
+                      <a href={l.href} className="text-ink-500 transition hover:text-ink-50">{l.label}</a>
                     </li>
                   ))}
                 </ul>
@@ -127,9 +133,9 @@ export default function MarketingLayout() {
               <div>
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-ink-300">Account</h3>
                 <ul className="mt-3 space-y-2 text-sm">
-                  <li><Link to="/login" className="text-ink-500 transition hover:text-white">Sign in</Link></li>
-                  <li><Link to="/register" className="text-ink-500 transition hover:text-white">Create account</Link></li>
-                  <li><Link to="/forgot-password" className="text-ink-500 transition hover:text-white">Reset password</Link></li>
+                  <li><Link to="/login" className="text-ink-500 transition hover:text-ink-50">Sign in</Link></li>
+                  <li><Link to="/register" className="text-ink-500 transition hover:text-ink-50">Create account</Link></li>
+                  <li><Link to="/forgot-password" className="text-ink-500 transition hover:text-ink-50">Reset password</Link></li>
                 </ul>
               </div>
 
@@ -143,7 +149,7 @@ export default function MarketingLayout() {
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/8 pt-6 text-xs text-ink-600 sm:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-line pt-6 text-xs text-ink-600 sm:flex-row">
             <p>© {new Date().getFullYear()} PrepPilot. All rights reserved.</p>
             <p>Built with React, Tailwind CSS and Gemini.</p>
           </div>

@@ -83,7 +83,7 @@ export default function ResumeUpload() {
                 <object
                   data={previewUrl}
                   type="application/pdf"
-                  className="h-[520px] w-full rounded-xl border border-white/10 bg-ink-900"
+                  className="h-[520px] w-full rounded-xl border border-line bg-ink-900"
                   aria-label="Resume preview"
                 >
                   {/* Browsers without an inline PDF viewer land here */}
@@ -110,7 +110,7 @@ export default function ResumeUpload() {
                 <Info className="h-4.5 w-4.5" style={{ width: 18, height: 18 }} aria-hidden="true" />
               </span>
               <div>
-                <h3 className="text-sm font-semibold text-white">How this works</h3>
+                <h3 className="text-sm font-semibold text-ink-50">How this works</h3>
                 <p className="mt-1.5 text-xs leading-relaxed text-ink-400">
                   Your resume stays in this browser tab and is sent once, together with a
                   job description, when you generate a report. Only the extracted text is
@@ -142,7 +142,7 @@ export default function ResumeUpload() {
           {hasResume && (
             <Card className="border-emerald-400/20 bg-emerald-500/[0.04] p-5 text-center">
               <Sparkles className="mx-auto h-6 w-6 text-emerald-400" aria-hidden="true" />
-              <p className="mt-3 text-sm font-medium text-white">Resume ready</p>
+              <p className="mt-3 text-sm font-medium text-ink-50">Resume ready</p>
               <p className="mt-1 text-xs text-ink-400">
                 Next, paste a job description to generate your report.
               </p>

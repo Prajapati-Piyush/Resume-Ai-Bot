@@ -141,7 +141,7 @@ function SectionHeading({ eyebrow, title, description, className }) {
           {eyebrow}
         </Badge>
       )}
-      <h2 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl">
+      <h2 className="text-balance text-3xl font-bold tracking-tight text-ink-50 sm:text-4xl">
         {title}
       </h2>
       {description && (
@@ -168,7 +168,7 @@ export default function Landing() {
             </div>
 
             <h1
-              className="mt-6 animate-fade-up text-balance text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-6xl"
+              className="mt-6 animate-fade-up text-balance text-4xl font-bold leading-[1.1] tracking-tight text-ink-50 sm:text-6xl"
               style={{ animationDelay: '80ms' }}
             >
               Walk into every interview{' '}
@@ -213,7 +213,7 @@ export default function Landing() {
             <div className="absolute -inset-x-8 -top-8 bottom-0 rounded-[2rem] bg-brand-500/10 blur-3xl" aria-hidden="true" />
 
             <Card className="relative overflow-hidden p-1.5">
-              <div className="rounded-[1rem] border border-white/8 bg-ink-950/80 p-5 sm:p-8">
+              <div className="rounded-[1rem] border border-line bg-ink-950/80 p-5 sm:p-8">
                 <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start">
                   <div className="shrink-0 text-center">
                     <ScoreRing score={78} />
@@ -262,7 +262,7 @@ export default function Landing() {
               ['7-day', 'Prep roadmap'],
             ].map(([value, label]) => (
               <div key={label} className="text-center">
-                <dt className="text-2xl font-bold text-white sm:text-3xl">{value}</dt>
+                <dt className="text-2xl font-bold text-ink-50 sm:text-3xl">{value}</dt>
                 <dd className="mt-1 text-xs text-ink-500">{label}</dd>
               </div>
             ))}
@@ -290,7 +290,7 @@ export default function Landing() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl border border-brand-400/25 bg-brand-500/12 text-brand-300">
                   <Icon className="h-5 w-5" aria-hidden="true" />
                 </span>
-                <h3 className="mt-4 text-base font-semibold text-white">{title}</h3>
+                <h3 className="mt-4 text-base font-semibold text-ink-50">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-ink-400">{body}</p>
               </Card>
             ))}
@@ -312,7 +312,7 @@ export default function Landing() {
           <div className="relative mt-14 grid gap-6 md:grid-cols-3">
             {/* connecting line on desktop */}
             <div
-              className="pointer-events-none absolute left-0 right-0 top-[3.25rem] hidden h-px bg-gradient-to-r from-transparent via-white/12 to-transparent md:block"
+              className="pointer-events-none absolute left-0 right-0 top-[3.25rem] hidden h-px bg-gradient-to-r from-transparent via-line-strong to-transparent md:block"
               aria-hidden="true"
             />
 
@@ -327,12 +327,12 @@ export default function Landing() {
                   <div className="relative grid h-16 w-16 place-items-center rounded-2xl border border-brand-400/25 bg-brand-500/12 text-brand-300 shadow-glow">
                     <Icon className="h-7 w-7" aria-hidden="true" />
                   </div>
-                  <span className="absolute -right-1 -top-1 z-20 grid h-7 w-7 place-items-center rounded-full border border-white/15 bg-ink-900 text-xs font-semibold text-white">
+                  <span className="absolute -right-1 -top-1 z-20 grid h-7 w-7 place-items-center rounded-full border border-line-strong bg-ink-900 text-xs font-semibold text-ink-50">
                     {i + 1}
                   </span>
                 </div>
 
-                <h3 className="mt-5 text-lg font-semibold text-white">{title}</h3>
+                <h3 className="mt-5 text-lg font-semibold text-ink-50">{title}</h3>
                 <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-ink-400">{body}</p>
               </div>
             ))}
@@ -376,12 +376,12 @@ export default function Landing() {
                   “{quote}”
                 </blockquote>
 
-                <figcaption className="mt-5 flex items-center gap-3 border-t border-white/8 pt-4">
+                <figcaption className="mt-5 flex items-center gap-3 border-t border-line pt-4">
                   <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-xs font-semibold text-white">
                     {initials}
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-white">{name}</p>
+                    <p className="text-sm font-medium text-ink-50">{name}</p>
                     <p className="text-xs text-ink-500">{role}</p>
                   </div>
                 </figcaption>
@@ -425,7 +425,7 @@ export default function Landing() {
                 </h3>
 
                 <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-white">{plan.price}</span>
+                  <span className="text-4xl font-bold text-ink-50">{plan.price}</span>
                   {plan.cadence && <span className="text-sm text-ink-500">{plan.cadence}</span>}
                 </div>
 
@@ -464,7 +464,7 @@ export default function Landing() {
                 <BarChart3 className="h-7 w-7" aria-hidden="true" />
               </span>
 
-              <h2 className="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              <h2 className="mt-6 text-balance text-3xl font-bold tracking-tight text-ink-50 sm:text-4xl">
                 Your next interview is already scheduled
               </h2>
               <p className="mx-auto mt-4 max-w-lg text-pretty text-base text-ink-400">

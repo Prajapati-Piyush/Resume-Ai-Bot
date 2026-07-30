@@ -54,12 +54,12 @@ export default function Modal({ open, onClose, title, description, children, foo
           type="button"
           onClick={onClose}
           aria-label="Close dialog"
-          className="absolute right-4 top-4 rounded-lg p-1.5 text-ink-400 transition hover:bg-white/5 hover:text-white"
+          className="absolute right-4 top-4 rounded-lg p-1.5 text-ink-400 transition hover:bg-fill-strong hover:text-ink-50"
         >
           <X className="h-4 w-4" />
         </button>
 
-        {title && <h2 className="pr-8 text-lg font-semibold text-white">{title}</h2>}
+        {title && <h2 className="pr-8 text-lg font-semibold text-ink-50">{title}</h2>}
         {description && <p className="mt-2 text-sm text-ink-400">{description}</p>}
 
         {children && <div className="mt-4">{children}</div>}

@@ -13,7 +13,7 @@ export default function ReportCard({ report, onDelete, className }) {
   const gapCount = report?.skillGaps?.length || 0
 
   return (
-    <Card hover className={cn('flex flex-col p-5', className)}>
+    <Card hover className={cn('flex h-full flex-col p-5', className)}>
       <div className="flex items-start gap-4">
         <div
           className={cn(
@@ -26,7 +26,7 @@ export default function ReportCard({ report, onDelete, className }) {
         </div>
 
         <div className="min-w-0 flex-1">
-          <h3 className="truncate text-sm font-semibold text-white">
+          <h3 className="truncate text-sm font-semibold text-ink-50">
             {report?.title || 'Untitled role'}
           </h3>
           <p className={cn('mt-0.5 text-xs font-medium', tone.text)}>{tone.label}</p>
@@ -52,7 +52,7 @@ export default function ReportCard({ report, onDelete, className }) {
         </span>
       </div>
 
-      <div className="mt-5 flex items-center gap-2 border-t border-white/8 pt-4">
+      <div className="mt-5 flex items-center gap-2 border-t border-line pt-4">
         <Button to={`/app/reports/${report?._id}`} size="sm" variant="secondary" className="flex-1">
           View report
           <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

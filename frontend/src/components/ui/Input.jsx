@@ -52,14 +52,14 @@ const Input = forwardRef(function Input(
           aria-invalid={error ? 'true' : undefined}
           aria-describedby={describedBy}
           className={cn(
-            'h-11 w-full rounded-xl border bg-white/[0.03] text-sm text-white transition',
-            'placeholder:text-ink-500 focus:bg-white/[0.05]',
+            'h-11 w-full rounded-xl border bg-fill text-sm text-ink-50 transition',
+            'placeholder:text-ink-500 focus:bg-fill-strong',
             'disabled:cursor-not-allowed disabled:opacity-55',
             Icon ? 'pl-11' : 'pl-3.5',
             isPassword ? 'pr-11' : 'pr-3.5',
             error
               ? 'border-rose-400/50 focus:border-rose-400'
-              : 'border-white/12 focus:border-brand-400/60',
+              : 'border-line focus:border-brand-400/60',
             className,
           )}
           {...props}
@@ -114,12 +114,12 @@ export const Textarea = forwardRef(function Textarea(
         aria-invalid={error ? 'true' : undefined}
         aria-describedby={describedBy}
         className={cn(
-          'w-full resize-y rounded-xl border bg-white/[0.03] p-3.5 text-sm leading-relaxed text-white transition',
-          'placeholder:text-ink-500 focus:bg-white/[0.05]',
+          'w-full resize-y rounded-xl border bg-fill p-3.5 text-sm leading-relaxed text-ink-50 transition',
+          'placeholder:text-ink-500 focus:bg-fill-strong',
           'disabled:cursor-not-allowed disabled:opacity-55',
           error
             ? 'border-rose-400/50 focus:border-rose-400'
-            : 'border-white/12 focus:border-brand-400/60',
+            : 'border-line focus:border-brand-400/60',
           className,
         )}
         {...props}

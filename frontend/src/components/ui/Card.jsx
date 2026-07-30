@@ -6,7 +6,7 @@ export default function Card({ as: Tag = 'div', className, hover = false, childr
     <Tag
       className={cn(
         'rounded-2xl glass shadow-card',
-        hover && 'transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-lift',
+        hover && 'transition-all duration-300 hover:border-line-strong hover:bg-fill-strong hover:shadow-lift',
         className,
       )}
       {...props}
@@ -26,7 +26,7 @@ export function CardHeader({ title, description, icon: Icon, action, className }
           </span>
         )}
         <div className="min-w-0">
-          <h3 className="truncate text-base font-semibold text-white">{title}</h3>
+          <h3 className="truncate text-base font-semibold text-ink-50">{title}</h3>
           {description && <p className="mt-1 text-sm text-ink-400">{description}</p>}
         </div>
       </div>

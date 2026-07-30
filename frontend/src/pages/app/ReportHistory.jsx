@@ -8,6 +8,7 @@ import EmptyState from '../../components/ui/EmptyState'
 import { SkeletonCard } from '../../components/ui/Skeleton'
 import { ConfirmDialog } from '../../components/ui/Modal'
 import ReportCard from '../../components/report/ReportCard'
+import { Stagger, StaggerItem } from '../../components/ui/Motion'
 import { deleteReport, listReports } from '../../api/interview.api'
 import { useToast } from '../../hooks/useToast'
 
@@ -116,7 +117,7 @@ export default function ReportHistory() {
               value={sort}
               onChange={(e) => setSort(e.target.value)}
               aria-label="Sort reports"
-              className="h-11 w-full appearance-none rounded-xl border border-white/12 bg-white/[0.03] pl-10 pr-9 text-sm text-white transition focus:border-brand-400/60 sm:w-48"
+              className="h-11 w-full appearance-none rounded-xl border border-line bg-fill pl-10 pr-9 text-sm text-ink-50 transition focus:border-brand-400/60 sm:w-48"
             >
               {Object.entries(SORTS).map(([key, { label }]) => (
                 <option key={key} value={key} className="bg-ink-900">
@@ -145,11 +146,13 @@ export default function ReportHistory() {
           />
         </Card>
       ) : visible.length ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((report) => (
-            <ReportCard key={report._id} report={report} onDelete={setPendingDelete} />
+            <StaggerItem key={report._id} className="h-full">
+              <ReportCard report={report} onDelete={setPendingDelete} />
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       ) : reports.length ? (
         <Card>
           <EmptyState

@@ -5,14 +5,14 @@ import Spinner from './Spinner'
 
 const VARIANTS = {
   primary:
-    'bg-brand-600 text-white shadow-glow hover:bg-brand-500 active:bg-brand-700 border border-brand-400/30',
+    'bg-brand-600 text-white shadow-glow hover:bg-brand-500 active:bg-brand-700 border border-brand-500/40',
   secondary:
-    'bg-white/[0.06] text-white border border-white/12 hover:bg-white/[0.1] backdrop-blur',
-  ghost: 'text-ink-300 hover:text-white hover:bg-white/[0.06] border border-transparent',
+    'bg-fill text-ink-100 border border-line hover:bg-fill-strong hover:border-line-strong',
+  ghost: 'text-ink-300 hover:text-ink-50 hover:bg-fill border border-transparent',
   danger:
     'bg-rose-600/90 text-white border border-rose-400/30 hover:bg-rose-500 active:bg-rose-700',
   outline:
-    'border border-white/15 text-white hover:border-brand-400/50 hover:bg-brand-500/10',
+    'border border-line-strong text-ink-100 hover:border-brand-400/50 hover:bg-brand-500/10 hover:text-ink-50',
 }
 
 const SIZES = {

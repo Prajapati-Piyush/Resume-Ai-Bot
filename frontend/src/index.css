@@ -2,13 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  THEME TOKENS
+  Every colour is a CSS variable so the app flips light/dark by toggling the
+  `.dark` class on <html>. The `ink` scale is semantic (see tailwind.config.js):
+  low stops = text, high stops = surfaces. Values invert between themes.
+*/
 @layer base {
   :root {
+    /* ---------- LIGHT (Vercel-like: white surfaces, crisp hairlines) ---------- */
+    --ink-50: 10 10 12;      /* primary text (near-black) */
+    --ink-100: 17 18 21;
+    --ink-200: 28 30 34;     /* strong text */
+    --ink-300: 55 60 68;     /* secondary text */
+    --ink-400: 90 96 105;    /* muted text */
+    --ink-500: 118 125 134;  /* faint text */
+    --ink-600: 148 155 164;  /* faintest text */
+    --ink-700: 214 217 223;  /* strong border */
+    --ink-800: 231 233 238;  /* hairline border */
+    --ink-900: 255 255 255;  /* raised surface / cards */
+    --ink-950: 247 248 250;  /* app background */
+
+    --fill: 244 245 247;         /* subtle panel fill */
+    --fill-strong: 236 238 241;  /* stronger fill / hover */
+    --line: 229 231 235;         /* hairline */
+    --line-strong: 214 217 223;  /* stronger divider */
+
+    --brand-rgb: 79 70 229;      /* brand-600, for var-based tints */
+
+    --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px -14px rgba(15, 23, 42, 0.18);
+    --shadow-lift: 0 12px 40px -12px rgba(15, 23, 42, 0.22);
+    --shadow-glow: 0 0 0 1px rgba(99, 102, 241, 0.16), 0 10px 40px -10px rgba(99, 102, 241, 0.35);
+
+    --aurora-1: rgba(99, 102, 241, 0.12);
+    --aurora-2: rgba(45, 212, 191, 0.10);
+    --aurora-3: rgba(139, 92, 246, 0.10);
+    --grid-line: rgba(15, 23, 42, 0.05);
+
+    color-scheme: light;
+  }
+
+  .dark {
+    /* ---------- DARK (Linear-like: deep slate, low-glare) ---------- */
+    --ink-50: 248 250 252;   /* primary text (near-white) */
+    --ink-100: 241 245 249;
+    --ink-200: 226 232 240;  /* strong text */
+    --ink-300: 203 213 225;  /* secondary text */
+    --ink-400: 148 163 184;  /* muted text */
+    --ink-500: 100 116 139;  /* faint text */
+    --ink-600: 71 85 105;    /* faintest text */
+    --ink-700: 51 65 85;     /* strong border */
+    --ink-800: 30 41 59;     /* hairline border */
+    --ink-900: 15 23 42;     /* raised surface / cards */
+    --ink-950: 2 6 23;       /* app background */
+
+    --fill: 20 27 40;
+    --fill-strong: 28 36 52;
+    --line: 30 41 59;
+    --line-strong: 51 65 85;
+
+    --brand-rgb: 129 140 248; /* brand-400 reads better on dark */
+
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -14px rgba(0, 0, 0, 0.5);
+    --shadow-lift: 0 12px 40px -12px rgba(0, 0, 0, 0.6);
+    --shadow-glow: 0 0 0 1px rgba(99, 102, 241, 0.2), 0 10px 40px -8px rgba(99, 102, 241, 0.45);
+
+    --aurora-1: rgba(99, 102, 241, 0.22);
+    --aurora-2: rgba(45, 212, 191, 0.13);
+    --aurora-3: rgba(139, 92, 246, 0.16);
+    --grid-line: rgba(255, 255, 255, 0.045);
+
     color-scheme: dark;
   }
 
   * {
-    @apply border-white/10;
+    border-color: rgb(var(--line));
   }
 
   html {
@@ -19,9 +87,10 @@
   body {
     @apply bg-ink-950 text-ink-100 font-sans antialiased;
     text-rendering: optimizeLegibility;
+    /* Smooth the flip between themes */
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* Respect users who ask for reduced motion — disable all decorative animation. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -34,82 +103,167 @@
   }
 
   ::selection {
-    @apply bg-brand-500/30 text-white;
+    @apply bg-brand-500/25 text-ink-50;
   }
 
-  /* Scrollbars tuned to the dark shell */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-white/10;
+    background: rgb(var(--line-strong));
+    border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-white/20;
+    background: rgb(var(--ink-600));
   }
 
-  /* Consistent focus ring across every interactive element */
   :focus-visible {
-    @apply outline-none ring-2 ring-brand-400/70 ring-offset-2 ring-offset-ink-950;
+    @apply outline-none ring-2 ring-brand-400/70;
+    --tw-ring-offset-width: 2px;
+    --tw-ring-offset-color: rgb(var(--ink-950));
   }
 }
 
 @layer components {
-  /* Frosted panel used by cards, sidebars, modals */
+  /* Card / panel surface — a real surface with a hairline, not a glass blur. */
+  .surface {
+    @apply border border-line bg-ink-900 shadow-card;
+  }
+
+  /* Frosted panel kept for overlays (sidebars, toasts, modals) where blur helps. */
   .glass {
-    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+    @apply border border-line bg-ink-900/80 backdrop-blur-xl;
   }
 
   .glass-strong {
-    @apply border border-white/10 bg-ink-900/80 backdrop-blur-2xl;
-  }
-
-  /* Gradient text for headline accents */
-  .text-gradient {
-    @apply bg-gradient-to-r from-white via-brand-100 to-brand-300 bg-clip-text text-transparent;
+    @apply border border-line bg-ink-900/90 backdrop-blur-2xl shadow-lift;
   }
 
   .text-gradient-brand {
-    @apply bg-gradient-to-r from-brand-400 via-brand-300 to-accent-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-brand-500 via-brand-400 to-accent-500 bg-clip-text text-transparent;
+    /* brighter in dark for legibility */
+  }
+  .dark .text-gradient-brand {
+    @apply from-brand-300 via-brand-200 to-accent-400;
   }
 
-  /* Hairline separator that fades at both ends */
   .rule {
-    @apply h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent;
+    @apply h-px w-full;
+    background: linear-gradient(to right, transparent, rgb(var(--line-strong)), transparent);
   }
 
   .skeleton {
-    @apply relative overflow-hidden rounded-md bg-white/5;
+    @apply relative overflow-hidden rounded-md;
+    background: rgb(var(--fill-strong));
   }
-
   .skeleton::after {
     content: '';
-    @apply absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent;
+    @apply absolute inset-0 -translate-x-full animate-shimmer;
+    background: linear-gradient(90deg, transparent, rgb(var(--ink-600) / 0.15), transparent);
   }
 }
 
 @layer utilities {
-  /* Ambient background glows used on marketing + auth screens */
   .bg-aurora {
     background-image:
-      radial-gradient(900px 500px at 15% 5%, rgba(99, 102, 241, 0.22), transparent 55%),
-      radial-gradient(800px 480px at 85% 0%, rgba(45, 212, 191, 0.14), transparent 55%),
-      radial-gradient(700px 520px at 70% 80%, rgba(139, 92, 246, 0.16), transparent 55%);
+      radial-gradient(900px 500px at 15% 5%, var(--aurora-1), transparent 55%),
+      radial-gradient(800px 480px at 85% 0%, var(--aurora-2), transparent 55%),
+      radial-gradient(700px 520px at 70% 80%, var(--aurora-3), transparent 55%);
   }
 
   .bg-grid {
     background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
     background-size: 56px 56px;
   }
 
   .mask-fade-b {
     -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  }
+
+  /* Legacy entrance animations kept working while Framer Motion is rolled in. */
+  .animate-fade-up {
+    animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-fade-in {
+    animation: fade-in 0.4s ease both;
+  }
+  .animate-scale-in {
+    animation: scale-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/*
+  Print / "Export as PDF".
+  The printable document (.print-root) is portaled to <body>, so on screen it is
+  simply hidden. For print we hide every OTHER direct child of <body> and let
+  .print-root render in NORMAL FLOW.
+
+  Why not the old visibility + position:absolute trick: absolutely-positioned
+  (out-of-flow) content cannot be paginated by print engines, so a report longer
+  than one page was clipped to page 1. Keeping .print-root in static flow lets
+  the browser break it across as many pages as the content needs — the fix for
+  truncated exports.
+*/
+.print-root {
+  display: none;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    /* allow the document to grow to its full height across pages */
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Hide the app; reveal only the printable document, in normal flow. */
+  body > * {
+    display: none !important;
+  }
+  body > .print-root {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Avoid awkward mid-item breaks without preventing pagination overall. */
+  .print-root h2 {
+    break-after: avoid;
+  }
+
+  @page {
+    margin: 14mm;
   }
 }

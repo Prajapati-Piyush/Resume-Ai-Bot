@@ -1,11 +1,20 @@
 /** @type {import('tailwindcss').Config} */
+
+// The `ink` scale is SEMANTIC, not literal. Each stop has a fixed meaning and its
+// actual colour is supplied by a CSS variable that flips between light and dark
+// (see index.css). This lets the whole app theme without rewriting class names:
+//   ink-50   → primary text        ink-700 → strong border
+//   ink-300  → secondary text      ink-800 → hairline border
+//   ink-400  → muted text          ink-900 → raised surface (cards)
+//   ink-500/600 → faint text       ink-950 → app background
+const inkVar = (stop) => `rgb(var(--ink-${stop}) / <alpha-value>)`
+
 export default {
   darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {
-        // Brand ramp — indigo/violet, the "AI product" register
         brand: {
           50: '#eef2ff',
           100: '#e0e7ff',
@@ -23,19 +32,28 @@ export default {
           500: '#14b8a6',
           600: '#0d9488',
         },
-        // Neutral surface ramp for the dark app shell
         ink: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-          950: '#020617',
+          50: inkVar(50),
+          100: inkVar(100),
+          200: inkVar(200),
+          300: inkVar(300),
+          400: inkVar(400),
+          500: inkVar(500),
+          600: inkVar(600),
+          700: inkVar(700),
+          800: inkVar(800),
+          900: inkVar(900),
+          950: inkVar(950),
+        },
+        // Semantic fills/lines for panels, chips and hairlines — theme-aware,
+        // used in place of the old hardcoded white/x utilities.
+        fill: {
+          DEFAULT: 'rgb(var(--fill) / <alpha-value>)',
+          strong: 'rgb(var(--fill-strong) / <alpha-value>)',
+        },
+        line: {
+          DEFAULT: 'rgb(var(--line) / <alpha-value>)',
+          strong: 'rgb(var(--line-strong) / <alpha-value>)',
         },
       },
       fontFamily: {
@@ -44,47 +62,25 @@ export default {
       },
       borderRadius: {
         xl: '0.875rem',
-        '2xl': '1.125rem',
+        '2xl': '1rem', // 16px — the spec's card radius
         '3xl': '1.5rem',
       },
       boxShadow: {
-        glow: '0 0 0 1px rgba(99,102,241,0.15), 0 8px 40px -8px rgba(99,102,241,0.45)',
-        card: '0 1px 2px rgba(2,6,23,0.06), 0 8px 24px -12px rgba(2,6,23,0.25)',
-        lift: '0 12px 40px -12px rgba(2,6,23,0.45)',
+        // Soft, layered shadows — flip via CSS vars so light mode gets real depth
+        // and dark mode stays subtle (Linear-style).
+        card: 'var(--shadow-card)',
+        lift: 'var(--shadow-lift)',
+        glow: 'var(--shadow-glow)',
       },
       keyframes: {
-        'fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(12px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        'fade-in': {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        'scale-in': {
-          '0%': { opacity: '0', transform: 'scale(0.96)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
-        },
-        'slide-in-right': {
-          '0%': { opacity: '0', transform: 'translateX(16px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        shimmer: {
-          '100%': { transform: 'translateX(100%)' },
-        },
+        shimmer: { '100%': { transform: 'translateX(100%)' } },
         float: {
           '0%,100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
         },
-        'spin-slow': {
-          to: { transform: 'rotate(360deg)' },
-        },
+        'spin-slow': { to: { transform: 'rotate(360deg)' } },
       },
       animation: {
-        'fade-up': 'fade-up 0.5s cubic-bezier(0.16,1,0.3,1) both',
-        'fade-in': 'fade-in 0.4s ease both',
-        'scale-in': 'scale-in 0.25s cubic-bezier(0.16,1,0.3,1) both',
-        'slide-in-right': 'slide-in-right 0.3s cubic-bezier(0.16,1,0.3,1) both',
         shimmer: 'shimmer 1.6s infinite',
         float: 'float 6s ease-in-out infinite',
         'spin-slow': 'spin-slow 12s linear infinite',

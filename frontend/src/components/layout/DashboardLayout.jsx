@@ -12,6 +12,8 @@ import {
   X,
 } from 'lucide-react'
 import Logo from './Logo'
+import ThemeToggle from '../ui/ThemeToggle'
+import PageTransition from './PageTransition'
 import Button from '../ui/Button'
 import { useAuth } from '../../hooks/useAuth'
 import { useToast } from '../../hooks/useToast'
@@ -38,8 +40,8 @@ function NavItems({ onNavigate }) {
             cn(
               'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all',
               isActive
-                ? 'border border-brand-400/25 bg-brand-500/12 text-white'
-                : 'border border-transparent text-ink-400 hover:bg-white/[0.05] hover:text-white',
+                ? 'border border-brand-400/25 bg-brand-500/12 text-ink-50'
+                : 'border border-transparent text-ink-400 hover:bg-fill-strong hover:text-ink-50',
             )
           }
         >
@@ -64,13 +66,13 @@ function NavItems({ onNavigate }) {
 
 function UserCard({ user, onLogout, loggingOut }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+    <div className="rounded-xl border border-line bg-fill p-3">
       <div className="flex items-center gap-3">
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-xs font-semibold text-white">
           {initialsOf(user?.name, user?.email)}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-white">{user?.name || 'Account'}</p>
+          <p className="truncate text-sm font-medium text-ink-50">{user?.name || 'Account'}</p>
           <p className="truncate text-xs text-ink-500">{user?.email}</p>
         </div>
       </div>
@@ -128,7 +130,7 @@ export default function DashboardLayout() {
       <div className="pointer-events-none fixed inset-0 bg-aurora opacity-40" aria-hidden="true" />
 
       {/* ---------- desktop sidebar ---------- */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-white/8 bg-ink-950/60 p-4 backdrop-blur-xl lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-line bg-ink-950/60 p-4 backdrop-blur-xl lg:flex">
         <div className="px-2 py-2">
           <Logo to="/app" />
         </div>
@@ -149,7 +151,7 @@ export default function DashboardLayout() {
             aria-hidden="true"
           />
           <aside
-            className="absolute inset-y-0 left-0 flex w-[min(280px,85vw)] animate-slide-in-right flex-col border-r border-white/10 bg-ink-900/95 p-4 backdrop-blur-2xl"
+            className="absolute inset-y-0 left-0 flex w-[min(280px,85vw)] animate-slide-in-right flex-col border-r border-line bg-ink-900/95 p-4 backdrop-blur-2xl"
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
@@ -160,7 +162,7 @@ export default function DashboardLayout() {
                 type="button"
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close menu"
-                className="rounded-lg p-2 text-ink-400 transition hover:bg-white/5 hover:text-white"
+                className="rounded-lg p-2 text-ink-400 transition hover:bg-fill-strong hover:text-ink-50"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -177,13 +179,13 @@ export default function DashboardLayout() {
 
       {/* ---------- main column ---------- */}
       <div className="relative lg:pl-64">
-        <header className="sticky top-0 z-20 border-b border-white/8 bg-ink-950/70 backdrop-blur-xl">
+        <header className="sticky top-0 z-20 border-b border-line bg-ink-950/70 backdrop-blur-xl">
           <div className="flex h-16 items-center gap-3 px-4 sm:px-6">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
-              className="rounded-lg p-2 text-ink-300 transition hover:bg-white/5 hover:text-white lg:hidden"
+              className="rounded-lg p-2 text-ink-300 transition hover:bg-fill-strong hover:text-ink-50 lg:hidden"
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -193,6 +195,7 @@ export default function DashboardLayout() {
             </div>
 
             <div className="ml-auto flex items-center gap-2">
+              <ThemeToggle variant="icon" />
               <Button to="/app/analyze" size="sm">
                 <Sparkles className="h-4 w-4" aria-hidden="true" />
                 <span className="hidden sm:inline">New analysis</span>
@@ -204,11 +207,11 @@ export default function DashboardLayout() {
 
         <main className="px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
           <div className="mx-auto max-w-6xl">
-            <Outlet />
+            <PageTransition><Outlet /></PageTransition>
           </div>
         </main>
 
-        <footer className="border-t border-white/8 px-4 py-6 sm:px-6 lg:px-8">
+        <footer className="border-t border-line px-4 py-6 sm:px-6 lg:px-8">
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 text-xs text-ink-500 sm:flex-row">
             <p className="flex items-center gap-1.5">
               <FileText className="h-3.5 w-3.5" aria-hidden="true" />

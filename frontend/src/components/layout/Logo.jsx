@@ -17,7 +17,7 @@ export default function Logo({ to = '/', showWordmark = true, className }) {
     <>
       {mark}
       {showWordmark && (
-        <span className="text-[15px] font-semibold tracking-tight text-white">
+        <span className="text-[15px] font-semibold tracking-tight text-ink-50">
           Prep<span className="text-brand-400">Pilot</span>
         </span>
       )}

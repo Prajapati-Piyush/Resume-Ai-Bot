@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import {
   ArrowRight,
   FileText,
+  Gauge,
   History,
+  Info,
   Sparkles,
   Target,
   TrendingUp,
@@ -14,10 +16,14 @@ import PageHeader from '../../components/ui/PageHeader'
 import StatCard from '../../components/ui/StatCard'
 import Card, { CardHeader } from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
+import Badge from '../../components/ui/Badge'
+import ScoreRing from '../../components/ui/ScoreRing'
 import EmptyState from '../../components/ui/EmptyState'
 import { SkeletonCard } from '../../components/ui/Skeleton'
+import { Stagger, StaggerItem } from '../../components/ui/Motion'
 import ReportCard from '../../components/report/ReportCard'
 import { listReports } from '../../api/interview.api'
+import { aggregateReadiness, readinessBand } from '../../lib/readiness'
 import { useAuth } from '../../hooks/useAuth'
 import { useResume } from '../../hooks/useResume'
 import { useToast } from '../../hooks/useToast'
@@ -94,6 +100,10 @@ export default function Dashboard() {
     }
   }, [reports])
 
+  // Derived readiness (see lib/readiness.js) — labelled "Estimated" in the UI.
+  const readiness = useMemo(() => aggregateReadiness(reports), [reports])
+  const band = readinessBand(readiness.avg)
+
   const recent = reports.slice(0, 3)
 
   return (
@@ -110,42 +120,87 @@ export default function Dashboard() {
         }
       />
 
-      {/* ---------- stats ---------- */}
-      <section aria-label="Your statistics" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {loading ? (
-          Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-[7.5rem] rounded-2xl glass p-5">
-              <div className="skeleton h-3 w-1/2" />
-              <div className="skeleton mt-3 h-7 w-1/3" />
+      {/* ---------- readiness hero + stats ---------- */}
+      {loading ? (
+        <section className="grid gap-4 lg:grid-cols-3">
+          <div className="h-56 rounded-2xl glass p-5 lg:col-span-1">
+            <div className="skeleton h-3 w-1/3" />
+            <div className="skeleton mx-auto mt-6 h-28 w-28 rounded-full" />
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-[7.5rem] rounded-2xl glass p-5">
+                <div className="skeleton h-3 w-1/2" />
+                <div className="skeleton mt-3 h-7 w-1/3" />
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : (
+        <section aria-label="Readiness and statistics" className="grid gap-4 lg:grid-cols-3">
+          {/* readiness gauge */}
+          <Card className="relative overflow-hidden p-5 lg:col-span-1">
+            <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-brand-500/10 blur-3xl" aria-hidden="true" />
+            <div className="relative flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm font-medium text-ink-200">
+                <Gauge className="h-4 w-4 text-brand-400" aria-hidden="true" />
+                Avg. readiness
+              </div>
+              <Badge variant="neutral" icon={Info} title="Estimated from match score, question coverage and skill gaps">
+                Est.
+              </Badge>
             </div>
-          ))
-        ) : (
-          <>
-            <StatCard icon={FileText} label="Reports" value={stats.total} sublabel="Generated so far" />
-            <StatCard
-              icon={TrendingUp}
-              label="Average match"
-              value={stats.total ? `${stats.avgScore}%` : '—'}
-              sublabel="Across all reports"
-              tone={stats.avgScore >= 70 ? 'success' : 'warning'}
-            />
-            <StatCard
-              icon={Target}
-              label="Best match"
-              value={stats.total ? `${stats.best}%` : '—'}
-              sublabel="Your strongest role"
-              tone="success"
-            />
-            <StatCard
-              icon={TriangleAlert}
-              label="Skill gaps"
-              value={stats.gaps}
-              sublabel="Identified across roles"
-              tone="warning"
-            />
-          </>
-        )}
-      </section>
+
+            <div className="mt-4 flex flex-col items-center">
+              <ScoreRing score={readiness.avg} size={132} showLabel={false} />
+              <p className={cn('mt-3 text-sm font-semibold',
+                band.tone === 'success' ? 'text-emerald-400' : band.tone === 'brand' ? 'text-brand-400' : band.tone === 'warning' ? 'text-amber-400' : 'text-rose-400',
+              )}>
+                {stats.total ? band.label : 'No data yet'}
+              </p>
+              {stats.total > 1 && (
+                <p className="mt-1 text-xs text-ink-500">
+                  {readiness.trend > 0 ? `Up ${readiness.trend} pts` : readiness.trend < 0 ? `Down ${Math.abs(readiness.trend)} pts` : 'Flat'} vs previous
+                </p>
+              )}
+            </div>
+          </Card>
+
+          {/* stat cards */}
+          <Stagger className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
+            <StaggerItem>
+              <StatCard icon={FileText} label="Reports" value={stats.total} sublabel="Generated so far" />
+            </StaggerItem>
+            <StaggerItem>
+              <StatCard
+                icon={TrendingUp}
+                label="Average match"
+                value={stats.total ? `${stats.avgScore}%` : '—'}
+                sublabel="Across all reports"
+                tone={stats.avgScore >= 70 ? 'success' : 'warning'}
+              />
+            </StaggerItem>
+            <StaggerItem>
+              <StatCard
+                icon={Target}
+                label="Best match"
+                value={stats.total ? `${stats.best}%` : '—'}
+                sublabel="Your strongest role"
+                tone="success"
+              />
+            </StaggerItem>
+            <StaggerItem>
+              <StatCard
+                icon={TriangleAlert}
+                label="Skill gaps"
+                value={stats.gaps}
+                sublabel="Identified across roles"
+                tone="warning"
+              />
+            </StaggerItem>
+          </Stagger>
+        </section>
+      )}
 
       {/* ---------- resume status ---------- */}
       <Card
@@ -167,7 +222,7 @@ export default function Dashboard() {
           </span>
 
           <div className="min-w-0">
-            <p className="text-sm font-medium text-white">
+            <p className="text-sm font-medium text-ink-50">
               {hasResume ? `Resume ready — ${resume.name}` : 'No resume loaded'}
             </p>
             <p className="mt-0.5 text-xs text-ink-400">
@@ -185,27 +240,28 @@ export default function Dashboard() {
       </Card>
 
       {/* ---------- quick actions ---------- */}
-      <section aria-label="Quick actions" className="mt-6 grid gap-4 sm:grid-cols-3">
+      <Stagger aria-label="Quick actions" className="mt-6 grid gap-4 sm:grid-cols-3">
         {QUICK_ACTIONS.map(({ to, icon: Icon, title, body }) => (
-          <Link
-            key={to}
-            to={to}
-            className="group rounded-2xl glass p-5 shadow-card transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-lift"
-          >
-            <span className="grid h-10 w-10 place-items-center rounded-xl border border-brand-400/25 bg-brand-500/12 text-brand-300 transition-transform group-hover:scale-105">
-              <Icon className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <span className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-white">
-              {title}
-              <ArrowRight
-                className="h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
-                aria-hidden="true"
-              />
-            </span>
-            <span className="mt-1 block text-xs leading-relaxed text-ink-400">{body}</span>
-          </Link>
+          <StaggerItem key={to}>
+            <Link
+              to={to}
+              className="group block h-full rounded-2xl glass p-5 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-line-strong hover:bg-fill-strong hover:shadow-lift"
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-xl border border-brand-400/25 bg-brand-500/12 text-brand-300 transition-transform group-hover:scale-105">
+                <Icon className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <span className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-ink-50">
+                {title}
+                <ArrowRight
+                  className="h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                  aria-hidden="true"
+                />
+              </span>
+              <span className="mt-1 block text-xs leading-relaxed text-ink-400">{body}</span>
+            </Link>
+          </StaggerItem>
         ))}
-      </section>
+      </Stagger>
 
       {/* ---------- recent reports ---------- */}
       <Card className="mt-6">
@@ -238,11 +294,13 @@ export default function Dashboard() {
               action={<Button onClick={load}>Try again</Button>}
             />
           ) : recent.length ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {recent.map((report) => (
-                <ReportCard key={report._id} report={report} />
+                <StaggerItem key={report._id} className="h-full">
+                  <ReportCard report={report} />
+                </StaggerItem>
               ))}
-            </div>
+            </Stagger>
           ) : (
             <EmptyState
               icon={Sparkles}

@@ -150,7 +150,7 @@ export default function ResetPassword() {
                     key={i}
                     className={cn(
                       'h-1 flex-1 rounded-full transition-colors',
-                      i < strength.score ? strength.tone : 'bg-white/10',
+                      i < strength.score ? strength.tone : 'bg-fill-strong',
                     )}
                   />
                 ))}

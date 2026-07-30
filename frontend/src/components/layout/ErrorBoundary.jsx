@@ -23,7 +23,7 @@ export default class ErrorBoundary extends Component {
           <span className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-xl border border-rose-400/25 bg-rose-500/10 text-rose-400">
             <AlertTriangle className="h-6 w-6" />
           </span>
-          <h1 className="text-lg font-semibold text-white">Something broke</h1>
+          <h1 className="text-lg font-semibold text-ink-50">Something broke</h1>
           <p className="mt-2 text-sm text-ink-400">
             An unexpected error stopped this page from rendering. Reloading usually clears it.
           </p>

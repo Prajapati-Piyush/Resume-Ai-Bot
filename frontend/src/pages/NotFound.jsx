@@ -31,14 +31,14 @@ export default function NotFound() {
         </div>
 
         <p
-          className="mt-8 animate-fade-up bg-gradient-to-b from-white to-white/20 bg-clip-text text-7xl font-bold leading-none text-transparent sm:text-8xl"
+          className="mt-8 animate-fade-up bg-gradient-to-b from-ink-50 to-ink-50/20 bg-clip-text text-7xl font-bold leading-none text-transparent sm:text-8xl"
           style={{ animationDelay: '60ms' }}
         >
           404
         </p>
 
         <h1
-          className="mt-4 animate-fade-up text-balance text-2xl font-bold tracking-tight text-white sm:text-3xl"
+          className="mt-4 animate-fade-up text-balance text-2xl font-bold tracking-tight text-ink-50 sm:text-3xl"
           style={{ animationDelay: '120ms' }}
         >
           We couldn&apos;t find that page

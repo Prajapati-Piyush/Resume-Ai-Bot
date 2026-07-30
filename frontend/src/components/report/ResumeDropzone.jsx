@@ -51,7 +51,7 @@ export default function ResumeDropzone({ resume, onSelect, onClear, progress = n
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" aria-hidden="true" />
-              <p className="truncate text-sm font-medium text-white">{resume.name}</p>
+              <p className="truncate text-sm font-medium text-ink-50">{resume.name}</p>
             </div>
             <p className="mt-1 text-xs text-ink-400">
               {formatBytes(resume.size)} · added {formatRelativeTime(resume.addedAt)}
@@ -105,7 +105,7 @@ export default function ResumeDropzone({ resume, onSelect, onClear, progress = n
           'flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-12 text-center transition-all',
           dragging
             ? 'border-brand-400/60 bg-brand-500/10'
-            : 'border-white/12 bg-white/[0.02] hover:border-brand-400/40 hover:bg-white/[0.04]',
+            : 'border-line bg-fill hover:border-brand-400/40 hover:bg-fill',
           disabled && 'cursor-not-allowed opacity-55',
         )}
       >
@@ -114,13 +114,13 @@ export default function ResumeDropzone({ resume, onSelect, onClear, progress = n
             'grid h-14 w-14 place-items-center rounded-2xl border transition-all',
             dragging
               ? 'scale-110 border-brand-400/40 bg-brand-500/15 text-brand-300'
-              : 'border-white/12 bg-white/[0.04] text-ink-400',
+              : 'border-line bg-fill text-ink-400',
           )}
         >
           <UploadCloud className="h-7 w-7" aria-hidden="true" />
         </span>
 
-        <p className="mt-4 text-sm font-medium text-white">
+        <p className="mt-4 text-sm font-medium text-ink-50">
           {dragging ? 'Drop your resume here' : 'Drag and drop your resume'}
         </p>
         <p className="mt-1.5 text-xs text-ink-500">

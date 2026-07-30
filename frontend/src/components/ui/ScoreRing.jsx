@@ -13,7 +13,7 @@ export default function ScoreRing({ score = 0, size = 132, strokeWidth = 10, cla
         <circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none" stroke="currentColor" strokeWidth={strokeWidth}
-          className="text-white/8"
+          className="text-ink-700/70"
         />
         <circle
           cx={size / 2} cy={size / 2} r={radius}

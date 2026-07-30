@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, CalendarDays, Printer, Trash2, TriangleAlert } from 'lucide-react'
+import { ArrowLeft, CalendarDays, Trash2, TriangleAlert } from 'lucide-react'
 import PageHeader from '../../components/ui/PageHeader'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
@@ -8,6 +9,8 @@ import EmptyState from '../../components/ui/EmptyState'
 import Skeleton, { SkeletonText } from '../../components/ui/Skeleton'
 import { ConfirmDialog } from '../../components/ui/Modal'
 import ReportView from '../../components/report/ReportView'
+import ExportMenu from '../../components/report/ExportMenu'
+import ReportPrintDocument from '../../components/report/ReportPrintDocument'
 import { deleteReport, getReport } from '../../api/interview.api'
 import { useToast } from '../../hooks/useToast'
 import { formatDate } from '../../lib/utils'
@@ -50,6 +53,13 @@ export default function InterviewPrep() {
   const [error, setError] = useState('')
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [printScope, setPrintScope] = useState('full')
+
+  // Set the scope, let the print document re-render, then open the print dialog.
+  const handleExport = useCallback((scope) => {
+    setPrintScope(scope)
+    requestAnimationFrame(() => requestAnimationFrame(() => window.print()))
+  }, [])
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -134,12 +144,9 @@ export default function InterviewPrep() {
           <>
             <Button to="/app/reports" variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              All reports
+              <span className="hidden sm:inline">All reports</span>
             </Button>
-            <Button variant="secondary" size="sm" onClick={() => window.print()}>
-              <Printer className="h-4 w-4" aria-hidden="true" />
-              Print
-            </Button>
+            <ExportMenu onExport={handleExport} />
             <Button
               variant="ghost"
               size="sm"
@@ -147,7 +154,7 @@ export default function InterviewPrep() {
               className="text-ink-400 hover:text-rose-400"
             >
               <Trash2 className="h-4 w-4" aria-hidden="true" />
-              Delete
+              <span className="hidden sm:inline">Delete</span>
             </Button>
           </>
         }
@@ -155,10 +162,17 @@ export default function InterviewPrep() {
 
       <ReportView report={report} />
 
+      {/* Off-screen printable document (portaled to body so page transforms
+          don't offset it); revealed only by @media print. */}
+      {createPortal(
+        <ReportPrintDocument report={report} scope={printScope} />,
+        document.body,
+      )}
+
       {/* the job description this was generated against, for reference */}
       {report.jobDescription && (
         <Card className="mt-6 p-5 sm:p-6">
-          <h3 className="text-sm font-semibold text-white">Job description used</h3>
+          <h3 className="text-sm font-semibold text-ink-50">Job description used</h3>
           <p className="mt-3 max-h-64 overflow-y-auto whitespace-pre-line text-sm leading-relaxed text-ink-400">
             {report.jobDescription}
           </p>

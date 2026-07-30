@@ -1,7 +1,7 @@
 import { cn } from '../../lib/utils'
 
 const VARIANTS = {
-  neutral: 'bg-white/[0.06] text-ink-300 border-white/12',
+  neutral: 'bg-fill-strong text-ink-300 border-line',
   brand: 'bg-brand-500/12 text-brand-300 border-brand-400/25',
   success: 'bg-emerald-500/10 text-emerald-300 border-emerald-400/25',
   warning: 'bg-amber-500/10 text-amber-300 border-amber-400/25',

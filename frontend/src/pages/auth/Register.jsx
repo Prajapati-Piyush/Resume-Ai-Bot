@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Lock, Mail, UserPlus, User as UserIcon } from 'lucide-react'
 import AuthShell from '../../components/layout/AuthShell'
+import GoogleLoginButton from '../../components/auth/GoogleLoginButton'
+import AuthDivider from '../../components/auth/AuthDivider'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import { useAuth } from '../../hooks/useAuth'
@@ -148,7 +150,7 @@ export default function Register() {
                     key={i}
                     className={cn(
                       'h-1 flex-1 rounded-full transition-colors',
-                      i < strength.score ? strength.tone : 'bg-white/10',
+                      i < strength.score ? strength.tone : 'bg-fill-strong',
                     )}
                   />
                 ))}
@@ -175,6 +177,10 @@ export default function Register() {
           {!submitting && <UserPlus className="h-4 w-4" aria-hidden="true" />}
           {submitting ? 'Creating account…' : 'Create account'}
         </Button>
+
+        <AuthDivider />
+
+        <GoogleLoginButton label="Sign up with Google" disabled={submitting} />
 
         <p className="text-center text-xs leading-relaxed text-ink-500">
           By creating an account you agree to our Terms of Service and Privacy Policy.

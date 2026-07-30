@@ -11,7 +11,7 @@ export default function ProgressBar({ value = 0, className, barClassName, label 
         </div>
       )}
       <div
-        className="h-1.5 w-full overflow-hidden rounded-full bg-white/8"
+        className="h-1.5 w-full overflow-hidden rounded-full bg-fill-strong"
         role="progressbar" aria-valuenow={safe} aria-valuemin={0} aria-valuemax={100}
       >
         <div

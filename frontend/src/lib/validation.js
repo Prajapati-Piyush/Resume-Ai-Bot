@@ -31,7 +31,7 @@ export function collectErrors(map) {
 
 /** 0-4 strength score plus a label, used by the register form meter. */
 export function passwordStrength(password = '') {
-  if (!password) return { score: 0, label: '', tone: 'bg-white/10' }
+  if (!password) return { score: 0, label: '', tone: 'bg-fill-strong' }
 
   let score = 0
   if (password.length >= 8) score++
