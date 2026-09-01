@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Allow: /features
+Allow: /how-it-works
+Allow: /resume-analysis
+Allow: /technical-interview-preparation
+Allow: /hr-interview-preparation
+Allow: /faq
+
+# Private routes & application dashboard
+Disallow: /app/
+Disallow: /app/*
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /api/
+
+Sitemap: https://preppilot.ai/sitemap.xml
+

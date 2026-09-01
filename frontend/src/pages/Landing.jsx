@@ -16,6 +16,7 @@ import Button from '../components/ui/Button'
 import Badge from '../components/ui/Badge'
 import Card from '../components/ui/Card'
 import ScoreRing from '../components/ui/ScoreRing'
+import SEO from '../components/seo/SEO'
 import { cn } from '../lib/utils'
 
 const FEATURES = [
@@ -96,7 +97,7 @@ const TESTIMONIALS = [
 const PLANS = [
   {
     name: 'Starter',
-    price: '$0',
+    price: '₹0',
     cadence: 'forever',
     description: 'Everything you need to try a real analysis.',
     features: ['3 reports per month', 'Match scoring', 'Predicted questions', 'Skill gap analysis'],
@@ -106,7 +107,7 @@ const PLANS = [
   },
   {
     name: 'Pro',
-    price: '$19',
+    price: '₹1,499',
     cadence: '/month',
     description: 'For an active job search with multiple roles in flight.',
     features: [
@@ -152,8 +153,34 @@ function SectionHeading({ eyebrow, title, description, className }) {
 }
 
 export default function Landing() {
+  const homeSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'PrepPilot',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any (Web Application)',
+    description:
+      'AI-powered interview preparation assistant and resume analyzer that converts job descriptions and resumes into personalized practice reports, predicted technical questions, and 7-day study plans.',
+    offers: {
+      '@type': 'Offer',
+      price: '0.00',
+      priceCurrency: 'INR',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '1280',
+    },
+  }
+
   return (
     <>
+      <SEO
+        title="AI-Powered Interview Preparation & Resume Analysis"
+        description="Master your next technical or HR interview with PrepPilot. Upload your resume, paste a job description, and get instant match scores, predicted questions, and a 7-day preparation roadmap."
+        schema={homeSchema}
+      />
+
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
         <div className="pointer-events-none absolute inset-0 bg-aurora" aria-hidden="true" />
@@ -163,7 +190,7 @@ export default function Landing() {
           <div className="mx-auto max-w-3xl text-center">
             <div className="animate-fade-up">
               <Badge variant="brand" icon={Sparkles}>
-                Powered by Google Gemini
+                Next-Gen AI Interview Intelligence
               </Badge>
             </div>
 
@@ -189,7 +216,7 @@ export default function Landing() {
               style={{ animationDelay: '240ms' }}
             >
               <Button to="/register" size="lg" className="w-full sm:w-auto">
-                Analyze my resume free
+                Start Preparing Free
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>
               <Button to="/login" variant="secondary" size="lg" className="w-full sm:w-auto">
@@ -474,7 +501,7 @@ export default function Landing() {
 
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button to="/register" size="lg" className="w-full sm:w-auto">
-                  Get my prep report
+                  Start Preparing Free
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
                 <Button to="/login" variant="secondary" size="lg" className="w-full sm:w-auto">

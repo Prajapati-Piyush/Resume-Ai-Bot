@@ -151,13 +151,13 @@ async function callGemini(prompt) {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
       return await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: process.env.GEMINI_MODEL || "gemini-3.6-flash",
         contents: prompt,
         config: {
           responseMimeType: "application/json",
           responseSchema: RESPONSE_SCHEMA,
           // A full report (many questions, each with a long answer, plus a
-          // multi-day plan) can be several thousand tokens. gemini-2.5-flash also
+          // multi-day plan) can be several thousand tokens. gemini-3.6-flash also
           // spends "thinking" tokens from the same budget, so we set this well
           // above the expected output size to stop long reports being clipped
           // mid-array. Truncation is still detected below via finishReason.

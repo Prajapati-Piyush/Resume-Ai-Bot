@@ -21,6 +21,12 @@ app.use(cookieParser());
 // so only initialize() is needed (no session()/serializeUser).
 app.use(passport.initialize());
 
+// Prevent web crawlers from indexing JSON API responses or endpoints
+app.use((req, res, next) => {
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+  next();
+});
+
 app.use("/api/auth", authRouter);
 
 app.use("/api/interview", interviewRouter);

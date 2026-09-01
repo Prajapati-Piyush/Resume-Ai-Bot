@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /*
-  THEME TOKENS
+  THEME TOKENS - ORIGINAL PREPPILOT SYSTEM
   Every colour is a CSS variable so the app flips light/dark by toggling the
   `.dark` class on <html>. The `ink` scale is semantic (see tailwind.config.js):
   low stops = text, high stops = surfaces. Values invert between themes.
@@ -224,12 +224,6 @@
   The printable document (.print-root) is portaled to <body>, so on screen it is
   simply hidden. For print we hide every OTHER direct child of <body> and let
   .print-root render in NORMAL FLOW.
-
-  Why not the old visibility + position:absolute trick: absolutely-positioned
-  (out-of-flow) content cannot be paginated by print engines, so a report longer
-  than one page was clipped to page 1. Keeping .print-root in static flow lets
-  the browser break it across as many pages as the content needs — the fix for
-  truncated exports.
 */
 .print-root {
   display: none;
@@ -239,12 +233,10 @@
   html,
   body {
     background: #fff !important;
-    /* allow the document to grow to its full height across pages */
     height: auto !important;
     overflow: visible !important;
   }
 
-  /* Hide the app; reveal only the printable document, in normal flow. */
   body > * {
     display: none !important;
   }
@@ -258,7 +250,6 @@
     display: none !important;
   }
 
-  /* Avoid awkward mid-item breaks without preventing pagination overall. */
   .print-root h2 {
     break-after: avoid;
   }

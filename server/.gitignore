@@ -5,3 +5,5 @@ uploads/
 logs/
 coverage/
 .DS_Store
+
+.env
