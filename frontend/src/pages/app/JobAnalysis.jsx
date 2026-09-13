@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Brain, Briefcase, FileText, Sparkles, TriangleAlert, Upload, User } from 'lucide-react'
+import { Brain, Briefcase, FileText, Sparkles, TriangleAlert, Upload, User, History } from 'lucide-react'
 import PageHeader from '../../components/ui/PageHeader'
 import Card, { CardHeader } from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import Input, { Textarea } from '../../components/ui/Input'
 import ResumeDropzone from '../../components/report/ResumeDropzone'
 import { generateReport } from '../../api/interview.api'
+import { useAuth } from '../../hooks/useAuth'
 import { useResume } from '../../hooks/useResume'
 import { useToast } from '../../hooks/useToast'
 import { cn } from '../../lib/utils'
@@ -40,51 +41,49 @@ function GeneratingOverlay({ stage, progress }) {
         This usually takes 30–60 seconds. Please keep this tab open.
       </p>
 
-      <ol className="mx-auto mt-8 max-w-sm space-y-3 text-left" aria-live="polite">
-        {STAGES.map((s, i) => {
-          const done = i < stage
-          const active = i === stage
+      {/* stage checklist */}
+      <ol className="mx-auto mt-8 max-w-sm space-y-2.5 text-left">
+        {STAGES.map((s, idx) => {
+          const isDone = idx < stage
+          const isCurrent = idx === stage
           return (
-            <li key={s.label} className="flex items-center gap-3">
+            <li
+              key={s.label}
+              className={cn(
+                'flex items-center gap-3 rounded-xl border p-3 text-xs transition-colors',
+                isCurrent
+                  ? 'border-brand-400/40 bg-brand-500/10 text-ink-50 font-medium'
+                  : isDone
+                    ? 'border-emerald-400/25 bg-emerald-500/5 text-ink-200'
+                    : 'border-line/60 bg-fill/40 text-ink-500 opacity-60',
+              )}
+            >
               <span
                 className={cn(
-                  'grid h-7 w-7 shrink-0 place-items-center rounded-full border text-[11px] font-semibold transition-all',
-                  done && 'border-emerald-400/30 bg-emerald-500/15 text-emerald-400',
-                  active && 'border-brand-400/40 bg-brand-500/15 text-brand-300',
-                  !done && !active && 'border-line bg-fill text-ink-600',
+                  'grid h-6 w-6 shrink-0 place-items-center rounded-lg text-[11px] font-mono font-semibold',
+                  isCurrent
+                    ? 'bg-brand-500 text-white'
+                    : isDone
+                      ? 'bg-emerald-500/20 text-emerald-400'
+                      : 'bg-fill text-ink-500',
                 )}
               >
-                {done ? '✓' : i + 1}
+                {isDone ? '✓' : idx + 1}
               </span>
-
-              <div className="min-w-0">
-                <p
-                  className={cn(
-                    'text-sm transition-colors',
-                    active ? 'font-medium text-ink-50' : done ? 'text-ink-300' : 'text-ink-600',
-                  )}
-                >
-                  {s.label}
-                </p>
-                {active && <p className="text-xs text-ink-500">{s.detail}</p>}
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs">{s.label}</p>
+                {isCurrent && <p className="text-[11px] text-brand-300">{s.detail}</p>}
               </div>
-
-              {active && (
-                <span className="ml-auto h-1.5 w-1.5 animate-pulse rounded-full bg-brand-400" />
-              )}
             </li>
           )
         })}
       </ol>
-
-      {progress !== null && progress < 100 && (
-        <p className="mt-6 text-xs tabular-nums text-ink-500">Upload {progress}%</p>
-      )}
     </Card>
   )
 }
 
 export default function JobAnalysis() {
+  const { user, refresh } = useAuth()
   const { resume, hasResume, selectResume, clearResume } = useResume()
   const toast = useToast()
   const navigate = useNavigate()
@@ -96,6 +95,7 @@ export default function JobAnalysis() {
   const [stage, setStage] = useState(0)
 
   const stageTimers = useRef([])
+  const credits = user?.credits !== undefined ? user.credits : 3
 
   useEffect(() => () => stageTimers.current.forEach(clearTimeout), [])
 
@@ -107,6 +107,11 @@ export default function JobAnalysis() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (submitting) return
+
+    if (credits <= 0) {
+      toast.error('You have used all 3 free AI Analysis Credits.')
+      return
+    }
 
     const found = {}
     if (!hasResume) found.resume = 'Upload a resume PDF first.'
@@ -146,6 +151,13 @@ export default function JobAnalysis() {
         },
         { onUploadProgress: setProgress },
       )
+
+      // Refresh auth profile so credit count reflects immediately
+      try {
+        await refresh()
+      } catch {
+        // non-blocking
+      }
 
       toast.success('Your interview report is ready')
       navigate(`/app/reports/${report._id}`, { replace: true })
@@ -269,6 +281,31 @@ export default function JobAnalysis() {
           </Card>
 
           <Card className="p-5">
+            {/* Credit status banner */}
+            {credits > 0 ? (
+              <div className="mb-4 flex items-center justify-between rounded-xl border border-line bg-fill px-3.5 py-2.5 text-xs">
+                <span className="text-ink-400">Analysis cost:</span>
+                <span className="inline-flex items-center gap-1 font-semibold text-brand-300">
+                  <Sparkles className="h-3.5 w-3.5 text-brand-400" />
+                  1 Credit ({credits} left)
+                </span>
+              </div>
+            ) : (
+              <div className="mb-4 rounded-xl border border-amber-400/30 bg-amber-500/[0.08] p-3.5 text-xs">
+                <div className="flex items-start gap-2 text-amber-300 font-semibold">
+                  <TriangleAlert className="h-4 w-4 shrink-0 mt-0.5" />
+                  <span>All 3 free credits used</span>
+                </div>
+                <p className="mt-1.5 text-ink-300 leading-relaxed text-[11px]">
+                  You have reached your 3 lifetime AI Analysis Credits. You can continue reviewing and exporting your past reports anytime.
+                </p>
+                <Button to="/app/history" variant="secondary" size="sm" fullWidth className="mt-3">
+                  <History className="h-3.5 w-3.5" />
+                  View past reports
+                </Button>
+              </div>
+            )}
+
             {errors.submit && (
               <div
                 role="alert"
@@ -291,9 +328,19 @@ export default function JobAnalysis() {
               </div>
             )}
 
-            <Button type="submit" size="lg" fullWidth loading={submitting}>
+            <Button
+              type="submit"
+              size="lg"
+              fullWidth
+              loading={submitting}
+              disabled={submitting || credits <= 0}
+            >
               {!submitting && <Sparkles className="h-4 w-4" aria-hidden="true" />}
-              {errors.submit ? 'Try again' : 'Generate report'}
+              {credits <= 0
+                ? 'No credits remaining'
+                : errors.submit
+                  ? 'Try again'
+                  : 'Generate report'}
             </Button>
 
             <p className="mt-3 text-center text-xs leading-relaxed text-ink-500">

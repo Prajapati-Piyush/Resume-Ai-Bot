@@ -94,43 +94,22 @@ const TESTIMONIALS = [
   },
 ]
 
-const PLANS = [
+const CREDIT_GUIDE = [
   {
-    name: 'Starter',
-    price: '₹0',
-    cadence: 'forever',
-    description: 'Everything you need to try a real analysis.',
-    features: ['3 reports per month', 'Match scoring', 'Predicted questions', 'Skill gap analysis'],
-    cta: 'Start free',
-    to: '/register',
-    variant: 'secondary',
+    title: '3 Lifetime Credits at Signup',
+    desc: 'Every registered account instantly receives 3 free analysis credits without entering any payment or billing details.',
   },
   {
-    name: 'Pro',
-    price: '₹1,499',
-    cadence: '/month',
-    description: 'For an active job search with multiple roles in flight.',
-    features: [
-      'Unlimited reports',
-      'Day-by-day prep roadmaps',
-      'Full report history',
-      'Priority AI generation',
-      'Export to PDF',
-    ],
-    cta: 'Start free trial',
-    to: '/register',
-    variant: 'primary',
-    featured: true,
+    title: '1 Credit = 1 AI Report',
+    desc: 'Credits are only consumed when a new interview report is successfully generated. Failed attempts or retries never cost credits.',
   },
   {
-    name: 'Teams',
-    price: 'Custom',
-    cadence: '',
-    description: 'For bootcamps and career services placing cohorts.',
-    features: ['Everything in Pro', 'Cohort dashboards', 'Shared question banks', 'Dedicated support'],
-    cta: 'Contact sales',
-    to: '/register',
-    variant: 'secondary',
+    title: 'Free Resume Uploads',
+    desc: 'Uploading, parsing, or updating your PDF resume is always 100% free and does not consume any analysis credits.',
+  },
+  {
+    title: 'Permanent History & PDF Export',
+    desc: 'Your generated reports remain in your dashboard history permanently with unlimited offline PDF downloads.',
   },
 ]
 
@@ -418,65 +397,93 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ================= PRICING ================= */}
+      {/* ================= PRICING & CREDITS ================= */}
       <section id="pricing" className="relative scroll-mt-20 py-20 sm:py-28">
         <div className="pointer-events-none absolute inset-0 bg-aurora opacity-40" aria-hidden="true" />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            eyebrow="Pricing"
-            title="Start free, upgrade when it matters"
-            description="Every plan includes the full analysis engine. Paid tiers lift the limits."
+            eyebrow="Simple & Free"
+            title="100% Free for Launch"
+            description="No subscriptions, no card required, and no hidden fees. Every registered account receives 3 lifetime AI Analysis Credits."
           />
 
-          <div className="mt-14 grid items-start gap-5 lg:grid-cols-3">
-            {PLANS.map((plan, i) => (
-              <Card
-                key={plan.name}
-                className={cn(
-                  'relative flex animate-fade-up flex-col p-7',
-                  plan.featured && 'border-brand-400/35 bg-brand-500/[0.07] shadow-glow lg:-mt-4 lg:pb-10',
-                )}
-                style={{ animationDelay: `${i * 80}ms` }}
-              >
-                {plan.featured && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <Badge variant="brand" className="border-brand-400/40 bg-ink-900">
-                      Most popular
-                    </Badge>
-                  </span>
-                )}
+          {/* Single Free Plan Card */}
+          <div className="relative mx-auto mt-12 max-w-xl pt-3.5">
+            <span className="absolute top-0 left-1/2 -translate-x-1/2 z-10">
+              <Badge variant="brand" icon={Sparkles} className="border-brand-400/50 bg-ink-900 px-3.5 py-1 text-xs shadow-md">
+                Launch Offer • 100% Free
+              </Badge>
+            </span>
 
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-ink-300">
-                  {plan.name}
-                </h3>
-
-                <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-ink-50">{plan.price}</span>
-                  {plan.cadence && <span className="text-sm text-ink-500">{plan.cadence}</span>}
+            <Card className="border-brand-400/40 bg-brand-500/[0.06] p-8 sm:p-10 shadow-glow">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-line pb-6">
+                <div>
+                  <h3 className="text-xl font-bold text-ink-50">Free Launch Plan</h3>
+                  <p className="mt-1 text-xs text-ink-400">Everything needed to prepare for top engineering roles.</p>
                 </div>
+                <div className="flex items-baseline gap-1.5 self-start sm:self-auto rounded-xl border border-brand-400/25 bg-brand-500/10 px-3.5 py-1.5">
+                  <span className="text-3xl font-extrabold text-ink-50">₹0</span>
+                  <span className="text-xs font-semibold text-brand-300 uppercase tracking-wider">Forever</span>
+                </div>
+              </div>
 
-                <p className="mt-3 text-sm leading-relaxed text-ink-400">{plan.description}</p>
-
-                <ul className="mt-6 flex-1 space-y-3">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-sm text-ink-300">
+              <div className="mt-6">
+                <p className="text-xs font-semibold uppercase tracking-wider text-ink-400">
+                  Included with every account:
+                </p>
+                <ul className="mt-4 space-y-3.5">
+                  {[
+                    '3 Lifetime AI Analysis Credits upon registration',
+                    '1 Credit = 1 comprehensive role-tailored report',
+                    'Unlimited resume uploads & replacements (0 credits consumed)',
+                    'Objective match score (0–100) & seniority evaluation',
+                    'Predicted technical questions with interviewer intent',
+                    'Behavioral & leadership questions with STAR answers',
+                    '7-Day prioritized preparation roadmap & study milestones',
+                    'Permanent report history & unlimited PDF export',
+                  ].map((feature) => (
+                    <li key={feature} className="flex items-start gap-2.5 text-sm text-ink-200">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" aria-hidden="true" />
-                      {f}
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
+              </div>
 
-                <Button to={plan.to} variant={plan.variant} fullWidth className="mt-7">
-                  {plan.cta}
+              <div className="mt-8">
+                <Button to="/register" size="lg" fullWidth>
+                  Get 3 Free Credits
+                  <ArrowRight className="h-4 w-4 ml-1.5" />
                 </Button>
-              </Card>
-            ))}
+                <p className="mt-3 text-center text-xs text-ink-500">
+                  No credit card required • Instant access in under 60 seconds
+                </p>
+              </div>
+            </Card>
           </div>
 
-          <p className="mt-8 text-center text-xs text-ink-600">
-            Pricing shown is illustrative — billing is not yet wired up in this build.
-          </p>
+          {/* How Credits Work */}
+          <div className="mt-20">
+            <div className="text-center max-w-2xl mx-auto">
+              <h3 className="text-xl font-bold text-ink-100">How AI Analysis Credits Work</h3>
+              <p className="mt-2 text-sm text-ink-400">
+                Transparent and simple — you only consume credits when an interview report is successfully generated.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {CREDIT_GUIDE.map(({ title, desc }, idx) => (
+                <Card key={title} className="p-5 flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-bold font-mono text-brand-400">0{idx + 1}</span>
+                    <h4 className="mt-2 text-sm font-semibold text-ink-50">{title}</h4>
+                    <p className="mt-2 text-xs leading-relaxed text-ink-400">{desc}</p>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

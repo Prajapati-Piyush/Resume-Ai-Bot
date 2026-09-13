@@ -65,29 +65,63 @@ function NavItems({ onNavigate }) {
 }
 
 function UserCard({ user, onLogout, loggingOut }) {
+  const credits = user?.credits !== undefined ? user.credits : 3
+
   return (
-    <div className="rounded-xl border border-line bg-fill p-3">
-      <div className="flex items-center gap-3">
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-xs font-semibold text-white">
-          {initialsOf(user?.name, user?.email)}
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-ink-50">{user?.name || 'Account'}</p>
-          <p className="truncate text-xs text-ink-500">{user?.email}</p>
+    <div className="space-y-2">
+      {/* AI Analysis Credit Progress */}
+      <div className="rounded-xl border border-line bg-fill/80 p-3">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-medium text-ink-400">Analysis Credits</span>
+          <span
+            className={cn(
+              'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold',
+              credits > 0
+                ? 'border border-brand-400/30 bg-brand-500/10 text-brand-300'
+                : 'border border-rose-400/30 bg-rose-500/10 text-rose-300',
+            )}
+          >
+            <Sparkles className="h-3 w-3" />
+            {credits} / 3 Left
+          </span>
         </div>
+        <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-ink-800">
+          <div
+            className={cn(
+              'h-full rounded-full transition-all duration-300',
+              credits > 0 ? 'bg-gradient-to-r from-brand-500 to-accent-400' : 'bg-rose-500',
+            )}
+            style={{ width: `${(Math.max(0, credits) / 3) * 100}%` }}
+          />
+        </div>
+        <p className="mt-1.5 text-[11px] text-ink-500">
+          {credits > 0 ? '1 credit per AI report generated' : 'All 3 free credits used'}
+        </p>
       </div>
 
-      <Button
-        variant="ghost"
-        size="sm"
-        fullWidth
-        className="mt-2 justify-start"
-        onClick={onLogout}
-        loading={loggingOut}
-      >
-        {!loggingOut && <LogOut className="h-4 w-4" aria-hidden="true" />}
-        Sign out
-      </Button>
+      <div className="rounded-xl border border-line bg-fill p-3">
+        <div className="flex items-center gap-3">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-xs font-semibold text-white">
+            {initialsOf(user?.name, user?.email)}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium text-ink-50">{user?.name || 'Account'}</p>
+            <p className="truncate text-xs text-ink-500">{user?.email}</p>
+          </div>
+        </div>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          fullWidth
+          className="mt-2 justify-start"
+          onClick={onLogout}
+          loading={loggingOut}
+        >
+          {!loggingOut && <LogOut className="h-4 w-4" aria-hidden="true" />}
+          Sign out
+        </Button>
+      </div>
     </div>
   )
 }
@@ -194,7 +228,12 @@ export default function DashboardLayout() {
               <Logo to="/app" showWordmark={false} />
             </div>
 
-            <div className="ml-auto flex items-center gap-2">
+            <div className="ml-auto flex items-center gap-2.5">
+              <div className="hidden items-center gap-1.5 rounded-lg border border-line bg-fill px-2.5 py-1 text-xs font-medium sm:flex">
+                <Sparkles className="h-3.5 w-3.5 text-brand-400" />
+                <span className="text-ink-200 font-semibold">{user?.credits !== undefined ? user.credits : 3}</span>
+                <span className="text-ink-500">/ 3 Credits</span>
+              </div>
               <ThemeToggle variant="icon" />
               <Button to="/app/analyze" size="sm">
                 <Sparkles className="h-4 w-4" aria-hidden="true" />

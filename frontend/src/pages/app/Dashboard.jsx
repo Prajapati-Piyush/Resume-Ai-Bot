@@ -106,6 +106,8 @@ export default function Dashboard() {
 
   const recent = reports.slice(0, 3)
 
+  const credits = user?.credits !== undefined ? user.credits : 3
+
   return (
     <>
       <PageHeader
@@ -169,6 +171,15 @@ export default function Dashboard() {
           {/* stat cards */}
           <Stagger className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
             <StaggerItem>
+              <StatCard
+                icon={Sparkles}
+                label="Analysis credits"
+                value={`${credits} / 3`}
+                sublabel={credits > 0 ? 'Remaining lifetime credits' : 'All free credits used'}
+                tone={credits > 0 ? 'brand' : 'warning'}
+              />
+            </StaggerItem>
+            <StaggerItem>
               <StatCard icon={FileText} label="Reports" value={stats.total} sublabel="Generated so far" />
             </StaggerItem>
             <StaggerItem>
@@ -182,15 +193,6 @@ export default function Dashboard() {
             </StaggerItem>
             <StaggerItem>
               <StatCard
-                icon={Target}
-                label="Best match"
-                value={stats.total ? `${stats.best}%` : '—'}
-                sublabel="Your strongest role"
-                tone="success"
-              />
-            </StaggerItem>
-            <StaggerItem>
-              <StatCard
                 icon={TriangleAlert}
                 label="Skill gaps"
                 value={stats.gaps}
@@ -200,6 +202,29 @@ export default function Dashboard() {
             </StaggerItem>
           </Stagger>
         </section>
+      )}
+
+      {/* ---------- credit exhaustion alert ---------- */}
+      {credits <= 0 && !loading && (
+        <Card className="mt-6 border-amber-400/30 bg-amber-500/[0.06] p-5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-amber-400/30 bg-amber-500/10 text-amber-400">
+                <Sparkles className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-ink-50">You have used all 3 free AI Analysis Credits</p>
+                <p className="mt-0.5 text-xs text-ink-300">
+                  You can still view, review, and export all your existing interview reports in your Report History.
+                </p>
+              </div>
+            </div>
+            <Button to="/app/history" variant="secondary" size="sm">
+              <History className="h-3.5 w-3.5" />
+              View History
+            </Button>
+          </div>
+        </Card>
       )}
 
       {/* ---------- resume status ---------- */}

@@ -58,7 +58,8 @@ export async function register(req, res) {
         user: {
             id: user._id,
             username: user.userName,
-            email: user.email
+            email: user.email,
+            credits: user.credits !== undefined ? user.credits : 3,
         }
     })
 
@@ -129,6 +130,7 @@ export async function login(req, res) {
                 id: user._id,
                 username: user.userName,
                 email: user.email,
+                credits: user.credits !== undefined ? user.credits : 3,
             },
         });
     } catch (err) {
@@ -155,12 +157,17 @@ export async function logoutUser(req, res) {
 export async function getMe(req, res) {
     const user = await userModel.findById(req.user.id)
 
+    if (!user) {
+        return res.status(404).json({ message: "User not found" })
+    }
+
     res.status(200).json({
         message: "User details fetched successfully",
         user:{
             id: user._id,
-            name:user.userName,
-            email:user.email
+            name: user.userName,
+            email: user.email,
+            credits: user.credits !== undefined ? user.credits : 3,
         }
     })
 }

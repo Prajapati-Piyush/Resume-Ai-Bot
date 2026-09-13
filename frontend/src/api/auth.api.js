@@ -12,6 +12,7 @@ function normalizeUser(raw) {
     id: raw.id || raw._id || null,
     name: raw.username || raw.name || '',
     email: raw.email || '',
+    credits: raw.credits !== undefined ? raw.credits : 3,
   }
 }
 

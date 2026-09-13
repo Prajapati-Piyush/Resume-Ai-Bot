@@ -48,6 +48,11 @@ const FAQS = [
     a: 'Yes. Every report you generate is automatically saved to your account and accessible anytime under Report History. You can also export any report as a clean, paginated PDF document for offline study and review.',
   },
   {
+    id: 'faq-pricing-credits',
+    q: 'Is PrepPilot free? How do AI Analysis Credits work?',
+    a: 'Yes, PrepPilot is completely free for launch. Every registered user receives 3 lifetime AI Analysis Credits with no credit card or subscription required. Each successfully generated report consumes 1 credit. Resume uploads, replacements, report reviews, and PDF downloads never consume credits.',
+  },
+  {
     id: 'faq-ai-model',
     q: 'What AI technology powers PrepPilot?',
     a: 'PrepPilot is powered by a high-performance LLM intelligence engine optimized specifically for technical role benchmarking, long-context resume semantic analysis, and deterministic evaluation of engineering competencies.',

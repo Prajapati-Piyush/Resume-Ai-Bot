@@ -5,6 +5,7 @@ import {
   LogOut,
   Mail,
   Shield,
+  Sparkles,
   TrendingUp,
   User as UserIcon,
 } from 'lucide-react'
@@ -32,6 +33,8 @@ export default function Profile() {
   const [loading, setLoading] = useState(true)
   const [confirmLogout, setConfirmLogout] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
+
+  const credits = user?.credits !== undefined ? user.credits : 3
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -91,9 +94,12 @@ export default function Profile() {
             <h2 className="mt-4 text-lg font-semibold text-ink-50">{user?.name || 'Your account'}</h2>
             <p className="mt-0.5 text-sm text-ink-400">{user?.email}</p>
 
-            <div className="mt-4 flex justify-center">
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
               <Badge variant="brand" icon={Shield}>
-                Free plan
+                Free Launch Plan
+              </Badge>
+              <Badge variant="neutral" icon={Sparkles}>
+                {credits} / 3 Credits Left
               </Badge>
             </div>
           </Card>
@@ -104,6 +110,7 @@ export default function Profile() {
               {[
                 { label: 'Name', value: user?.name || '—', icon: UserIcon },
                 { label: 'Email', value: user?.email || '—', icon: Mail },
+                { label: 'AI Credits Remaining', value: `${credits} of 3 free credits`, icon: Sparkles },
               ].map(({ label, value, icon: Icon }) => (
                 <div
                   key={label}
@@ -133,6 +140,10 @@ export default function Profile() {
               ) : (
                 <>
                   <div className="rounded-xl border border-line bg-fill p-4 text-center">
+                    <p className="text-2xl font-bold tabular-nums text-ink-50">{credits}</p>
+                    <p className="mt-1 text-xs text-ink-500">Credits left</p>
+                  </div>
+                  <div className="rounded-xl border border-line bg-fill p-4 text-center">
                     <p className="text-2xl font-bold tabular-nums text-ink-50">{stats.total}</p>
                     <p className="mt-1 text-xs text-ink-500">Reports</p>
                   </div>
@@ -141,12 +152,6 @@ export default function Profile() {
                       {stats.total ? `${stats.avg}%` : '—'}
                     </p>
                     <p className="mt-1 text-xs text-ink-500">Avg. match</p>
-                  </div>
-                  <div className="col-span-2 rounded-xl border border-line bg-fill p-4 text-center sm:col-span-1">
-                    <p className="truncate text-sm font-medium text-ink-50">
-                      {stats.latest ? formatRelativeTime(stats.latest.createdAt) : '—'}
-                    </p>
-                    <p className="mt-1 text-xs text-ink-500">Last analysis</p>
                   </div>
                 </>
               )}

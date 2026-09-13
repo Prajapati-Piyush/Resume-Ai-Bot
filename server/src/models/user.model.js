@@ -46,6 +46,12 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+
+    credits: {
+        type: Number,
+        default: 3,
+        min: 0,
+    },
 })
 
 const userModel = mongoose.model("users", userSchema)

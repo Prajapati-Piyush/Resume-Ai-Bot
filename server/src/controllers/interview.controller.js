@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { PDFParse } from 'pdf-parse'
 import generateInterviewReport from '../services/ai.service.js'
 import interviewReportModel from '../models/interviewReport.model.js'
+import userModel from '../models/user.model.js'
 
 export async function generateInterviewReportController(req, res) {
   try {
@@ -13,6 +14,21 @@ export async function generateInterviewReportController(req, res) {
 
     if (!jobDescription || !jobDescription.trim()) {
       return res.status(400).json({ error: "Job description is required" })
+    }
+
+    // Enforce 3-credit lifetime limit on the backend
+    const user = await userModel.findById(req.user.id)
+    if (!user) {
+      return res.status(404).json({ error: "User not found" })
+    }
+
+    const currentCredits = user.credits !== undefined ? user.credits : 3
+    if (currentCredits <= 0) {
+      return res.status(403).json({
+        error: "You have used all 3 of your free AI Analysis Credits. New reports cannot be generated.",
+        code: "CREDITS_EXHAUSTED",
+        credits: 0,
+      })
     }
 
     let resumeContent
@@ -45,9 +61,14 @@ export async function generateInterviewReportController(req, res) {
       ...aiReport,
     })
 
+    // Consume 1 credit only upon successful report generation
+    user.credits = Math.max(0, currentCredits - 1)
+    await user.save()
+
     res.status(201).json({
       message: "Interview report generated successfully",
       report: interviewReport,
+      remainingCredits: user.credits,
     })
   }
   catch (error) {
