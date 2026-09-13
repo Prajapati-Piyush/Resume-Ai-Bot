@@ -17,10 +17,11 @@ export function signSessionToken(user, expiresIn = "1d") {
 
 /** Set the httpOnly session cookie with the same options used everywhere else. */
 export function setSessionCookie(res, token, maxAge = DAY_MS) {
+    const isProd = process.env.NODE_ENV === "production";
     res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
         path: "/",
         maxAge,
     });

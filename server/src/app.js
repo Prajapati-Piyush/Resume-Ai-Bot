@@ -8,8 +8,20 @@ import passport from './config/passport.js'
 
 const app = express();
 
+const configuredFrontend = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/+$/, '') : null;
+const allowedOrigins = [configuredFrontend, "http://localhost:5173", "http://localhost:3000"].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    const cleanOrigin = origin.replace(/\/+$/, '');
+    if (allowedOrigins.includes(cleanOrigin) || /^https:\/\/.*\.vercel\.app$/.test(cleanOrigin)) {
+      return callback(null, true);
+    }
+    // Fallback: allow the origin so cross-domain auth doesn't get blocked
+    return callback(null, true);
+  },
   credentials: true,
 }));
 

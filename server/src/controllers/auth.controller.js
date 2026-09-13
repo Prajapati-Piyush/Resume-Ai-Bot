@@ -45,16 +45,19 @@ export async function register(req, res) {
         return res.status(500).json({ message: "JWT_SECRET is not configured" });
     }
 
+    const isProd = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: 'lax',
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax',
         path: '/',
         maxAge: 24 * 60 * 60 * 1000, //1 day
     })
 
     res.status(201).json({
         message: "User registered successfulyy",
+        token,
         user: {
             id: user._id,
             username: user.userName,
@@ -116,16 +119,19 @@ export async function login(req, res) {
             { expiresIn: tokenExpiry }
         );
 
+        const isProd = process.env.NODE_ENV === "production";
+
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            secure: isProd,
+            sameSite: isProd ? "none" : "lax",
             path: "/",
             maxAge,
         });
 
         return res.status(200).json({
             message: "User loggedIn successfully",
+            token,
             user: {
                 id: user._id,
                 username: user.userName,
@@ -146,7 +152,13 @@ export async function logoutUser(req, res) {
     if (token) {
         await tokenBlacklistModel.create({ token })
     }
-    res.clearCookie("token")
+    const isProd = process.env.NODE_ENV === "production";
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
+        path: "/",
+    })
 
     res.status(200).json({
         message: "User logged out successfully"
@@ -265,7 +277,7 @@ export function googleCallback(req, res) {
         const token = signSessionToken(req.user);
         setSessionCookie(res, token);
 
-        return res.redirect(`${FRONTEND_URL}/app`);
+        return res.redirect(`${FRONTEND_URL}/app?token=${token}`);
     } catch (error) {
         console.error("[auth] googleCallback error", error);
         return res.redirect(`${FRONTEND_URL}/login?oauth=error`);

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react'
 import * as authApi from '../api/auth.api'
-import { SESSION_EXPIRED_EVENT } from '../api/client'
+import { SESSION_EXPIRED_EVENT, TOKEN_STORAGE_KEY } from '../api/client'
 
 export const AuthContext = createContext(null)
 
@@ -12,6 +12,18 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     let cancelled = false
+
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const tokenFromUrl = params.get('token')
+      if (tokenFromUrl) {
+        localStorage.setItem(TOKEN_STORAGE_KEY, tokenFromUrl)
+        const cleanUrl = window.location.pathname
+        window.history.replaceState({}, document.title, cleanUrl)
+      }
+    } catch {
+      // Ignore URL parsing errors in non-browser environments
+    }
 
     ;(async () => {
       try {
